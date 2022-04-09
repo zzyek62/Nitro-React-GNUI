@@ -38,7 +38,7 @@ export const InventoryFurnitureSearchView: FC<InventoryFurnitureSearchViewProps>
 
     return (
         <Flex gap={ 1 }>
-            <input type="text" className="form-control form-control-sm" placeholder={ LocalizeText('generic.search') } value={ searchValue } onChange={ event => setSearchValue(event.target.value) } />
+            <input type="text" className="form-control form-control-sm gnui-form-control" placeholder={ LocalizeText('generic.search') } value={ searchValue } onChange={ event => setSearchValue(event.target.value) } />
             <Button variant="primary">
                 <FontAwesomeIcon icon="search" />
             </Button>
