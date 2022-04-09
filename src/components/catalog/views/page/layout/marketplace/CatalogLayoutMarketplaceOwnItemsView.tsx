@@ -1,8 +1,8 @@
 import { CancelMarketplaceOfferMessageComposer, GetMarketplaceOwnOffersMessageComposer, MarketplaceCancelOfferResultEvent, MarketplaceOwnOffersEvent, RedeemMarketplaceOfferCreditsMessageComposer } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useMemo, useState } from 'react';
+import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { LocalizeText, NotificationAlertType, NotificationUtilities, SendMessageComposer } from '../../../../../../api';
 import { Button, Column, Text } from '../../../../../../common';
-import { BatchUpdates, UseMessageEventHook, UseMountEffect } from '../../../../../../hooks';
+import { UseMessageEventHook } from '../../../../../../hooks';
 import { CatalogLayoutProps } from '../CatalogLayout.types';
 import { CatalogLayoutMarketplaceItemView, OWN_OFFER } from './CatalogLayoutMarketplaceItemView';
 import { MarketplaceOfferData } from './common/MarketplaceOfferData';
@@ -20,19 +20,16 @@ export const CatalogLayoutMarketplaceOwnItemsView: FC<CatalogLayoutProps> = prop
         if(!parser) return;
 
         const offers = parser.offers.map(offer =>
-            {
-                const newOffer = new MarketplaceOfferData(offer.offerId, offer.furniId, offer.furniType, offer.extraData, offer.stuffData, offer.price, offer.status, offer.averagePrice, offer.offerCount);
-
-                newOffer.timeLeftMinutes = offer.timeLeftMinutes;
-
-                return newOffer;
-            });
-
-        BatchUpdates(() =>
         {
-            setCreditsWaiting(parser.creditsWaiting);
-            setOffers(offers);
+            const newOffer = new MarketplaceOfferData(offer.offerId, offer.furniId, offer.furniType, offer.extraData, offer.stuffData, offer.price, offer.status, offer.averagePrice, offer.offerCount);
+
+            newOffer.timeLeftMinutes = offer.timeLeftMinutes;
+
+            return newOffer;
         });
+
+        setCreditsWaiting(parser.creditsWaiting);
+        setOffers(offers);
     }, []);
 
     UseMessageEventHook(MarketplaceOwnOffersEvent, onMarketPlaceOwnOffersEvent);
@@ -77,13 +74,13 @@ export const CatalogLayoutMarketplaceOwnItemsView: FC<CatalogLayoutProps> = prop
         SendMessageComposer(new CancelMarketplaceOfferMessageComposer(offerData.offerId));
     };
 
-    UseMountEffect(() =>
+    useEffect(() =>
     {
         SendMessageComposer(new GetMarketplaceOwnOffersMessageComposer());
-    });
+    }, []);
 
     return (
-        <Column>
+        <Column overflow="hidden">
             { (creditsWaiting <= 0) &&
                 <Text center className="bg-muted rounded p-1">
                     { LocalizeText('catalog.marketplace.redeem.no_sold_items') }
@@ -91,9 +88,9 @@ export const CatalogLayoutMarketplaceOwnItemsView: FC<CatalogLayoutProps> = prop
             { (creditsWaiting > 0) &&
                 <Column center gap={ 1 } className="bg-muted rounded p-2">
                     <Text>
-                        { LocalizeText('catalog.marketplace.redeem.get_credits', ['count', 'credits'], [ soldOffers.length.toString(), creditsWaiting.toString() ]) }
+                        { LocalizeText('catalog.marketplace.redeem.get_credits', [ 'count', 'credits' ], [ soldOffers.length.toString(), creditsWaiting.toString() ]) }
                     </Text>
-                    <Button size="sm" className="mt-1" onClick={ redeemSoldOffers }>
+                    <Button className="mt-1" onClick={ redeemSoldOffers }>
                         { LocalizeText('catalog.marketplace.offer.redeem') }
                     </Button>
                 </Column> }

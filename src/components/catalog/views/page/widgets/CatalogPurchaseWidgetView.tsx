@@ -3,8 +3,7 @@ import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { CreateLinkEvent, GetClubMemberLevel, LocalizeText, SendMessageComposer } from '../../../../../api';
 import { Button, LayoutLoadingSpinnerView } from '../../../../../common';
 import { CatalogEvent, CatalogInitGiftEvent, CatalogInitPurchaseEvent, CatalogPurchasedEvent, CatalogPurchaseFailureEvent, CatalogPurchaseNotAllowedEvent, CatalogPurchaseSoldOutEvent, CatalogWidgetEvent } from '../../../../../events';
-import { DispatchUiEvent, UseUiEvent } from '../../../../../hooks';
-import { GetCurrencyAmount } from '../../../../purse/common/CurrencyHelper';
+import { DispatchUiEvent, usePurse, UseUiEvent } from '../../../../../hooks';
 import { useCatalogContext } from '../../../CatalogContext';
 import { CatalogPurchaseState } from '../../../common/CatalogPurchaseState';
 import { Offer } from '../../../common/Offer';
@@ -20,8 +19,8 @@ export const CatalogPurchaseWidgetView: FC<CatalogPurchaseWidgetViewProps> = pro
     const { noGiftOption = false, purchaseCallback = null } = props;
     const [ purchaseWillBeGift, setPurchaseWillBeGift ] = useState(false);
     const [ purchaseState, setPurchaseState ] = useState(CatalogPurchaseState.NONE);
-    const { currentOffer = null, currentPage = null, purchaseOptions = null, setPurchaseOptions = null, getNodesByOfferId = null } = useCatalogContext();
-    const { quantity = 1, extraData = '', extraParamRequired = false, previewStuffData = null } = purchaseOptions;
+    const { currentOffer = null, currentPage = null, purchaseOptions = null, setPurchaseOptions = null } = useCatalogContext();
+    const { getCurrencyAmount = null } = usePurse();
 
     const onCatalogInitPurchaseEvent = useCallback((event: CatalogInitPurchaseEvent) =>
     {
@@ -61,7 +60,7 @@ export const CatalogPurchaseWidgetView: FC<CatalogPurchaseWidgetViewProps> = pro
     {
         if(!currentOffer) return false;
         
-        if(extraParamRequired && (!extraData || !extraData.length)) return false;
+        if(purchaseOptions.extraParamRequired && (!purchaseOptions.extraData || !purchaseOptions.extraData.length)) return false;
 
         if(currentOffer.pricingModel === Offer.PRICING_MODEL_SINGLE)
         {
@@ -71,9 +70,9 @@ export const CatalogPurchaseWidgetView: FC<CatalogPurchaseWidgetViewProps> = pro
         }
 
         return false;
-    }, [ currentOffer, extraParamRequired, extraData ]);
+    }, [ currentOffer, purchaseOptions ]);
 
-    const purchase = useCallback((isGift: boolean = false) =>
+    const purchase = (isGift: boolean = false) =>
     {
         if(!currentOffer) return;
 
@@ -86,7 +85,7 @@ export const CatalogPurchaseWidgetView: FC<CatalogPurchaseWidgetViewProps> = pro
 
         if(isGift)
         {
-            DispatchUiEvent(new CatalogInitGiftEvent(currentOffer.page.pageId, currentOffer.offerId, extraData));
+            DispatchUiEvent(new CatalogInitGiftEvent(currentOffer.page.pageId, currentOffer.offerId, purchaseOptions.extraData));
 
             return;
         }
@@ -109,8 +108,8 @@ export const CatalogPurchaseWidgetView: FC<CatalogPurchaseWidgetViewProps> = pro
         //     if(nodes) pageId = nodes[0].pageId;
         // }
 
-        SendMessageComposer(new PurchaseFromCatalogComposer(pageId, currentOffer.offerId, extraData, quantity));
-    }, [ currentOffer, purchaseCallback, extraData, quantity ]);
+        SendMessageComposer(new PurchaseFromCatalogComposer(pageId, currentOffer.offerId, purchaseOptions.extraData, purchaseOptions.quantity));
+    }
 
     useEffect(() =>
     {
@@ -119,7 +118,7 @@ export const CatalogPurchaseWidgetView: FC<CatalogPurchaseWidgetViewProps> = pro
         return () =>
         {
             setPurchaseState(CatalogPurchaseState.NONE);
-            setPurchaseOptions({ quantity: 1, extraData: '', extraParamRequired: false, previewStuffData: null });
+            setPurchaseOptions({ quantity: 1, extraData: null, extraParamRequired: false, previewStuffData: null });
         }
     }, [ currentOffer, setPurchaseOptions ]);
 
@@ -142,21 +141,21 @@ export const CatalogPurchaseWidgetView: FC<CatalogPurchaseWidgetViewProps> = pro
 
     const PurchaseButton = () =>
     {
-        const priceCredits = (currentOffer.priceInCredits * quantity);
-        const pricePoints = (currentOffer.priceInActivityPoints * quantity);
+        const priceCredits = (currentOffer.priceInCredits * purchaseOptions.quantity);
+        const pricePoints = (currentOffer.priceInActivityPoints * purchaseOptions.quantity);
 
         if(GetClubMemberLevel() < currentOffer.clubLevel) return <Button variant="danger" disabled>{ LocalizeText('catalog.alert.hc.required') }</Button>;
 
         if(isLimitedSoldOut) return <Button variant="danger" disabled>{ LocalizeText('catalog.alert.limited_edition_sold_out.title') }</Button>;
 
-        if(priceCredits > GetCurrencyAmount(-1)) return <Button variant="danger" disabled>{ LocalizeText('catalog.alert.notenough.title') }</Button>;
+        if(priceCredits > getCurrencyAmount(-1)) return <Button variant="danger" disabled>{ LocalizeText('catalog.alert.notenough.title') }</Button>;
 
-        if(pricePoints > GetCurrencyAmount(currentOffer.activityPointType)) return <Button variant="danger" disabled>{ LocalizeText('catalog.alert.notenough.activitypoints.title.' + currentOffer.activityPointType) }</Button>;
+        if(pricePoints > getCurrencyAmount(currentOffer.activityPointType)) return <Button variant="danger" disabled>{ LocalizeText('catalog.alert.notenough.activitypoints.title.' + currentOffer.activityPointType) }</Button>;
 
         switch(purchaseState)
         {
             case CatalogPurchaseState.CONFIRM:
-                return <Button onClick={ event => purchase() }>{ LocalizeText('catalog.marketplace.confirm_title') }</Button>;
+                return <Button variant="warning" onClick={ event => purchase() }>{ LocalizeText('catalog.marketplace.confirm_title') }</Button>;
             case CatalogPurchaseState.PURCHASE:
                 return <Button disabled><LayoutLoadingSpinnerView /></Button>;
             case CatalogPurchaseState.FAILED:
@@ -165,7 +164,7 @@ export const CatalogPurchaseWidgetView: FC<CatalogPurchaseWidgetViewProps> = pro
                 return <Button variant="danger">{ LocalizeText('generic.failed') + ' - ' + LocalizeText('catalog.alert.limited_edition_sold_out.title') }</Button>;
             case CatalogPurchaseState.NONE:
             default:
-                return <Button disabled={ (extraParamRequired && (!extraData || !extraData.length)) } onClick={ event => setPurchaseState(CatalogPurchaseState.CONFIRM) }>{ LocalizeText('catalog.purchase_confirmation.' + (currentOffer.isRentOffer ? 'rent' : 'buy')) }</Button>;
+                return <Button disabled={ (purchaseOptions.extraParamRequired && (!purchaseOptions.extraData || !purchaseOptions.extraData.length)) } onClick={ event => setPurchaseState(CatalogPurchaseState.CONFIRM) }>{ LocalizeText('catalog.purchase_confirmation.' + (currentOffer.isRentOffer ? 'rent' : 'buy')) }</Button>;
         }
     }
 
@@ -173,7 +172,7 @@ export const CatalogPurchaseWidgetView: FC<CatalogPurchaseWidgetViewProps> = pro
         <>
             <PurchaseButton />
             { (!noGiftOption && !currentOffer.isRentOffer) &&
-                <Button disabled={ ((quantity > 1) || !currentOffer.giftable || isLimitedSoldOut || (extraParamRequired && (!extraData || !extraData.length))) } onClick={ event => purchase(true) }>
+                <Button disabled={ ((purchaseOptions.quantity > 1) || !currentOffer.giftable || isLimitedSoldOut || (purchaseOptions.extraParamRequired && (!purchaseOptions.extraData || !purchaseOptions.extraData.length))) } onClick={ event => purchase(true) }>
                     { LocalizeText('catalog.purchase_confirmation.gift') }
                 </Button> }
         </>

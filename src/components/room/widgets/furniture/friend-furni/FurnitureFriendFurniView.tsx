@@ -9,8 +9,8 @@ import { FurnitureEngravingLockData } from './FriendFurniLockData';
 export const FurnitureFriendFurniView: FC<{}> = props =>
 {
     const { eventDispatcher = null, widgetHandler = null } = useRoomContext();
-    const [ engravingLockData, setEngravingLockData ]   = useState<FurnitureEngravingLockData>(null);
-    const [ engravingStage, setEngravingStage ]         = useState(0);
+    const [ engravingLockData, setEngravingLockData ] = useState<FurnitureEngravingLockData>(null);
+    const [ engravingStage, setEngravingStage ] = useState(0);
     
     const onNitroEvent = (event: NitroEvent) =>
     {
@@ -31,6 +31,7 @@ export const FurnitureFriendFurniView: FC<{}> = props =>
                     if(data.length !== 6) return;
                     
                     setEngravingLockData(new FurnitureEngravingLockData(widgetEvent.objectId, widgetEvent.category, type, [ data[1], data[2] ], [ data[3], data[4] ], data[5]));
+                    setEngravingStage(0);
                 }
                 return;
             }
@@ -38,11 +39,11 @@ export const FurnitureFriendFurniView: FC<{}> = props =>
                 const widgetEvent = (event as RoomWidgetUpdateRoomObjectEvent);
 
                 setEngravingLockData(prevState =>
-                    {
-                        if(!prevState || (widgetEvent.id !== prevState.objectId) || (widgetEvent.category !== prevState.category)) return prevState;
+                {
+                    if(!prevState || (widgetEvent.id !== prevState.objectId) || (widgetEvent.category !== prevState.category)) return prevState;
 
-                        return null;
-                    });
+                    return null;
+                });
                 return;
             }
         }
@@ -56,12 +57,7 @@ export const FurnitureFriendFurniView: FC<{}> = props =>
         const parser = event.getParser();
 
         setEngravingLockData(new FurnitureEngravingLockData(parser.furniId));
-
-        if(parser.start)
-            setEngravingStage(1);
-        else
-            setEngravingStage(2);
-
+        setEngravingStage(parser.start ? 1 : 2);
     }, []);
 
     UseMessageEventHook(LoveLockFurniStartEvent, onLoveLockFurniStartEvent);
@@ -75,6 +71,7 @@ export const FurnitureFriendFurniView: FC<{}> = props =>
                 return;
             case 'accept_request':
                 GetRoomSession().connection.send(new FriendFurniConfirmLockMessageComposer(engravingLockData.objectId, true));
+                processAction('close_request');
                 return;
             case 'reject_request':
                 GetRoomSession().connection.send(new FriendFurniConfirmLockMessageComposer(engravingLockData.objectId, false));
@@ -97,7 +94,7 @@ export const FurnitureFriendFurniView: FC<{}> = props =>
 
     return (
         <>
-            { engravingStage > 0 && <NitroCardView className="nitro-engraving-lock" theme="primary-slim">
+            { (engravingStage > 0) && <NitroCardView className="nitro-engraving-lock" theme="primary-slim">
                 <NitroCardHeaderView headerText={ LocalizeText('friend.furniture.confirm.lock.caption') } onCloseClick={ event => processAction('close_request') } />
                 <NitroCardContentView>
                     <h5 className="text-black text-center fw-bold mt-2 mb-2">

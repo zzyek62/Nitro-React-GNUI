@@ -21,11 +21,13 @@ export const CatalogLayoutTrophiesView: FC<CatalogLayoutProps> = props =>
         if(!currentOffer) return;
 
         setPurchaseOptions(prevValue =>
-            {
-                const extraData = trophyText;
+        {
+            const newValue = { ...prevValue };
 
-                return { ...prevValue, extraData };
-            });
+            newValue.extraData = trophyText;
+
+            return newValue;
+        });
     }, [ currentOffer, trophyText, setPurchaseOptions ]);
 
     return (

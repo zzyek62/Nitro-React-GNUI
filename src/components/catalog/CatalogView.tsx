@@ -1,9 +1,9 @@
-import { FrontPageItem, GetCatalogIndexComposer, GetCatalogPageComposer, GetClubGiftInfo, GetGiftWrappingConfigurationComposer, GetMarketplaceConfigurationMessageComposer, ILinkEventTracker, RoomPreviewer } from '@nitrots/nitro-renderer';
+import { CatalogPublishedMessageEvent, FrontPageItem, GetCatalogIndexComposer, GetCatalogPageComposer, GetClubGiftInfo, GetGiftWrappingConfigurationComposer, ILinkEventTracker, RoomPreviewer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { AddEventLinkTracker, GetRoomEngine, LocalizeText, PlaySound, RemoveLinkEventTracker, SendMessageComposer, SoundNames } from '../../api';
+import { AddEventLinkTracker, GetRoomEngine, LocalizeText, NotificationAlertType, NotificationUtilities, PlaySound, RemoveLinkEventTracker, SendMessageComposer, SoundNames } from '../../api';
 import { Column, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../common';
 import { CatalogPurchasedEvent } from '../../events';
-import { BatchUpdates, UseUiEvent } from '../../hooks';
+import { UseMessageEventHook, UseUiEvent } from '../../hooks';
 import { CatalogContextProvider } from './CatalogContext';
 import { CatalogMessageHandler } from './CatalogMessageHandler';
 import { CatalogPage } from './common/CatalogPage';
@@ -39,25 +39,33 @@ export const CatalogView: FC<{}> = props =>
     const [ frontPageItems, setFrontPageItems ] = useState<FrontPageItem[]>([]);
     const [ roomPreviewer, setRoomPreviewer ] = useState<RoomPreviewer>(null);
     const [ navigationHidden, setNavigationHidden ] = useState(false);
-    const [ purchaseOptions, setPurchaseOptions ] = useState<IPurchaseOptions>({});
+    const [ purchaseOptions, setPurchaseOptions ] = useState<IPurchaseOptions>({ quantity: 1, extraData: null, extraParamRequired: false, previewStuffData: null });
     const [ catalogOptions, setCatalogOptions ] = useState<ICatalogOptions>({});
 
     const resetState = useCallback(() =>
     {
-        BatchUpdates(() =>
-        {
-            setPageId(-1);
-            setPreviousPageId(-1);
-            setRootNode(null);
-            setOffersToNodes(null);
-            setCurrentPage(null);
-            setCurrentOffer(null);
-            setActiveNodes([]);
-            setSearchResult(null);
-            setFrontPageItems([]);
-            setIsVisible(true);
-        });
+        setPageId(-1);
+        setPreviousPageId(-1);
+        setRootNode(null);
+        setOffersToNodes(null);
+        setCurrentPage(null);
+        setCurrentOffer(null);
+        setActiveNodes([]);
+        setSearchResult(null);
+        setFrontPageItems([]);
+        setIsVisible(false);
     }, []);
+
+    const onCatalogPublishedMessageEvent = useCallback((event: CatalogPublishedMessageEvent) =>
+    {
+        const wasVisible = isVisible;
+
+        resetState();
+
+        if(wasVisible) NotificationUtilities.simpleAlert(LocalizeText('catalog.alert.published.description'), NotificationAlertType.ALERT, null, null, LocalizeText('catalog.alert.published.title'));
+    }, [ isVisible, resetState ]);
+
+    UseMessageEventHook(CatalogPublishedMessageEvent, onCatalogPublishedMessageEvent);
 
     const getNodeById = useCallback((id: number, node: ICatalogNode) =>
     {
@@ -108,11 +116,8 @@ export const CatalogView: FC<{}> = props =>
     {
         if(pageId < 0) return;
         
-        BatchUpdates(() =>
-        {
-            setIsBusy(true);
-            setPageId(pageId);
-        });
+        setIsBusy(true);
+        setPageId(pageId);
 
         if(pageId > -1) SendMessageComposer(new GetCatalogPageComposer(pageId, offerId, currentType));
     }, [ currentType ]);
@@ -121,24 +126,21 @@ export const CatalogView: FC<{}> = props =>
     {
         const catalogPage = (new CatalogPage(pageId, layoutCode, localization, offers, acceptSeasonCurrencyAsCredits) as ICatalogPage);
 
-        BatchUpdates(() =>
-        {
-            setCurrentPage(catalogPage);
-            setPreviousPageId(prevValue => ((pageId !== -1) ? pageId : prevValue));
-            setNavigationHidden(false);
+        setCurrentPage(catalogPage);
+        setPreviousPageId(prevValue => ((pageId !== -1) ? pageId : prevValue));
+        setNavigationHidden(false);
 
-            if((offerId > -1) && catalogPage.offers.length)
+        if((offerId > -1) && catalogPage.offers.length)
+        {
+            for(const offer of catalogPage.offers)
             {
-                for(const offer of catalogPage.offers)
-                {
-                    if(offer.offerId !== offerId) continue;
-                    
-                    setCurrentOffer(offer)
-        
-                    break;
-                }
+                if(offer.offerId !== offerId) continue;
+                
+                setCurrentOffer(offer)
+    
+                break;
             }
-        });
+        }
     }, []);
 
     const activateNode = useCallback((targetNode: ICatalogNode, offerId: number = -1) =>
@@ -172,98 +174,89 @@ export const CatalogView: FC<{}> = props =>
         nodes.reverse();
 
         setActiveNodes(prevValue =>
+        {
+            const isActive = (prevValue.indexOf(targetNode) >= 0);
+            const isOpen = targetNode.isOpen;
+
+            for(const existing of prevValue)
             {
-                const isActive = (prevValue.indexOf(targetNode) >= 0);
-                const isOpen = targetNode.isOpen;
+                existing.deactivate();
 
-                for(const existing of prevValue)
-                {
-                    existing.deactivate();
+                if(nodes.indexOf(existing) === -1) existing.close();
+            }
 
-                    if(nodes.indexOf(existing) === -1) existing.close();
-                }
+            for(const n of nodes)
+            {
+                n.activate();
 
-                for(const n of nodes)
-                {
-                    n.activate();
+                if(n.parent) n.open();
 
-                    if(n.parent) n.open();
+                if((n === targetNode.parent) && n.children.length) n.open();
+            }
 
-                    if((n === targetNode.parent) && n.children.length) n.open();
-                }
+            if(isActive && isOpen) targetNode.close();
+            else targetNode.open();
 
-                if(isActive && isOpen) targetNode.close();
-                else targetNode.open();
-
-                return nodes;
-            });
+            return nodes;
+        });
             
         if(targetNode.pageId > -1) loadCatalogPage(targetNode.pageId, offerId);
     }, [ setActiveNodes, loadCatalogPage ]);
 
     const openPageById = useCallback((id: number) =>
     {
-        BatchUpdates(() =>
+        setSearchResult(null);
+
+        if(!isVisible)
         {
-            setSearchResult(null);
+            REQUESTED_PAGE.requestById = id;
 
-            if(!isVisible)
-            {
-                REQUESTED_PAGE.requestById = id;
+            setIsVisible(true);
+        }
+        else
+        {
+            const node = getNodeById(id, rootNode);
 
-                setIsVisible(true);
-            }
-            else
-            {
-                const node = getNodeById(id, rootNode);
-
-                if(node) activateNode(node);
-            }
-        });
+            if(node) activateNode(node);
+        }
     }, [ isVisible, rootNode, getNodeById, activateNode ]);
 
     const openPageByName = useCallback((name: string) =>
     {
-        BatchUpdates(() =>
+        setSearchResult(null);
+
+        if(!isVisible)
         {
-            setSearchResult(null);
+            REQUESTED_PAGE.requestByName = name;
 
-            if(!isVisible)
-            {
-                REQUESTED_PAGE.requestByName = name;
+            setIsVisible(true);
+        }
+        else
+        {
+            const node = getNodeByName(name, rootNode);
 
-                setIsVisible(true);
-            }
-            else
-            {
-                const node = getNodeByName(name, rootNode);
-
-                if(node) activateNode(node);
-            }
-        });
+            if(node) activateNode(node);
+        }
     }, [ isVisible, rootNode, getNodeByName, activateNode ]);
 
     const openPageByOfferId = useCallback((offerId: number) =>
     {
-        BatchUpdates(() =>
+        setSearchResult(null);
+
+        if(!isVisible)
         {
-            setSearchResult(null);
+            REQUESTED_PAGE.requestedByOfferId = offerId;
 
-            if(!isVisible)
-            {
-                REQUESTED_PAGE.requestedByOfferId = offerId;
+            setIsVisible(true);
+        }
+        else
+        {
+            const nodes = getNodesByOfferId(offerId);
 
-                setIsVisible(true);
-            }
-            else
-            {
-                const nodes = getNodesByOfferId(offerId);
+            if(!nodes || !nodes.length) return;
 
-                if(!nodes || !nodes.length) return;
-
-                activateNode(nodes[0], offerId);
-            }
-        });
+            activateNode(nodes[0], offerId);
+        }
     }, [ isVisible, getNodesByOfferId, activateNode ]);
 
     const onCatalogPurchasedEvent = useCallback((event: CatalogPurchasedEvent) =>
@@ -335,11 +328,11 @@ export const CatalogView: FC<{}> = props =>
         return () =>
         {
             setRoomPreviewer(prevValue =>
-                {
-                    prevValue.dispose();
+            {
+                prevValue.dispose();
 
-                    return null;
-                });
+                return null;
+            });
         }
     }, []);
 
@@ -347,7 +340,6 @@ export const CatalogView: FC<{}> = props =>
     {
         if(!isVisible || rootNode) return;
 
-        SendMessageComposer(new GetMarketplaceConfigurationMessageComposer());
         SendMessageComposer(new GetGiftWrappingConfigurationComposer());
         SendMessageComposer(new GetClubGiftInfo());
         SendMessageComposer(new GetCatalogIndexComposer(currentType));
@@ -405,23 +397,26 @@ export const CatalogView: FC<{}> = props =>
             <CatalogMessageHandler />
             { isVisible &&
                 <NitroCardView uniqueKey="catalog" className="nitro-catalog">
-                    <NitroCardHeaderView headerText={ LocalizeText('catalog.title') } onCloseClick={ event => { setIsVisible(false); } } />
+                    <NitroCardHeaderView headerText={ LocalizeText('catalog.title') } onCloseClick={ event => 
+                    {
+                        setIsVisible(false); 
+                    } } />
                     <NitroCardTabsView>
                         { rootNode && (rootNode.children.length > 0) && rootNode.children.map(child =>
-                            {
-                                if(!child.isVisible) return null;
+                        {
+                            if(!child.isVisible) return null;
 
-                                return (
-                                    <NitroCardTabsItemView key={ child.pageId } isActive={ child.isActive } onClick={ event =>
-                                        {
-                                            if(searchResult) setSearchResult(null);
+                            return (
+                                <NitroCardTabsItemView key={ child.pageId } isActive={ child.isActive } onClick={ event =>
+                                {
+                                    if(searchResult) setSearchResult(null);
 
-                                            activateNode(child);
-                                        } }>
-                                        { child.localization }
-                                    </NitroCardTabsItemView>
-                                );
-                            }) }
+                                    activateNode(child);
+                                } }>
+                                    { child.localization }
+                                </NitroCardTabsItemView>
+                            );
+                        }) }
                     </NitroCardTabsView>
                     <NitroCardContentView>
                         <Grid>
@@ -436,8 +431,8 @@ export const CatalogView: FC<{}> = props =>
                         </Grid>
                     </NitroCardContentView>
                 </NitroCardView> }
-                <CatalogGiftView />
-                <MarketplacePostOfferView />
+            <CatalogGiftView />
+            <MarketplacePostOfferView />
         </CatalogContextProvider>
     );
 }

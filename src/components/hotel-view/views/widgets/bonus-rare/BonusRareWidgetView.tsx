@@ -2,7 +2,9 @@ import { BonusRareInfoMessageEvent, GetBonusRareInfoMessageComposer } from '@nit
 import { FC, useCallback, useEffect, useState } from 'react';
 import { SendMessageComposer } from '../../../../../api';
 import { UseMessageEventHook } from '../../../../../hooks';
-import { BonusRareWidgetViewProps } from './BonusRareWidgetView.types';
+
+export interface BonusRareWidgetViewProps
+{}
 
 export const BonusRareWidgetView: FC<BonusRareWidgetViewProps> = props =>
 {
@@ -34,8 +36,8 @@ export const BonusRareWidgetView: FC<BonusRareWidgetViewProps> = props =>
         <div className="bonus-rare widget d-flex">
             { productType }
             <div className="bg-light-dark rounded overflow-hidden position-relative bonus-bar-container">
-                <div className="d-flex justify-content-center align-items-center w-100 h-100 position-absolute small top-0">{(totalCoinsForBonus - coinsStillRequiredToBuy) + '/' + totalCoinsForBonus}</div>
-                <div className="small bg-info rounded position-absolute top-0 h-100" style={{ width: ((totalCoinsForBonus - coinsStillRequiredToBuy) / totalCoinsForBonus) * 100 + '%' }}></div>
+                <div className="d-flex justify-content-center align-items-center w-100 h-100 position-absolute small top-0">{ (totalCoinsForBonus - coinsStillRequiredToBuy) + '/' + totalCoinsForBonus }</div>
+                <div className="small bg-info rounded position-absolute top-0 h-100" style={ { width: ((totalCoinsForBonus - coinsStillRequiredToBuy) / totalCoinsForBonus) * 100 + '%' } }></div>
             </div>
         </div>
     );

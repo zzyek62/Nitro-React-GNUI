@@ -9,6 +9,7 @@ export class ChatBubbleMessage
     public height: number = 0;
     public elementRef: HTMLDivElement = null;
     public visible: boolean = false;
+    public skipMovement: boolean = false;
 
     private _top: number = 0;
     private _left: number = 0;
@@ -18,6 +19,7 @@ export class ChatBubbleMessage
         public senderCategory: number = -1,
         public roomId: number = -1,
         public text: string = '',
+        public formattedText: string = '',
         public username: string = '',
         public location: INitroPoint = null,
         public type: number = 0,
@@ -25,7 +27,7 @@ export class ChatBubbleMessage
         public imageUrl: string = null,
         public color: string = null
     ) 
-{
+    {
         this.id = ++ChatBubbleMessage.BUBBLE_COUNTER;
     }
 

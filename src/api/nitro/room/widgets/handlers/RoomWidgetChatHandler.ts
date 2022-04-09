@@ -1,6 +1,7 @@
-import { AvatarFigurePartType, AvatarScaleType, AvatarSetType, IAvatarImageListener, INitroPoint, IVector3D, NitroEvent, NitroPoint, PetFigureData, RoomObjectCategory, RoomObjectType, RoomObjectVariable, RoomSessionChatEvent, RoomWidgetEnum, SystemChatStyleEnum, TextureUtils, Vector3d } from '@nitrots/nitro-renderer';
-import { GetAvatarRenderManager, GetRoomEngine } from '../../../..';
+import { AvatarFigurePartType, AvatarScaleType, AvatarSetType, IAvatarImageListener, NitroEvent, PetFigureData, RoomObjectCategory, RoomObjectType, RoomObjectVariable, RoomSessionChatEvent, RoomUserData, RoomWidgetEnum, SystemChatStyleEnum, TextureUtils, Vector3d } from '@nitrots/nitro-renderer';
+import { GetAvatarRenderManager, GetConfigurationManager, GetRoomEngine, PlaySound } from '../../../..';
 import { LocalizeText } from '../../../../utils/LocalizeText';
+import { GetRoomObjectScreenLocation } from '../../GetRoomObjectScreenLocation';
 import { RoomWidgetUpdateChatEvent, RoomWidgetUpdateEvent } from '../events';
 import { RoomWidgetMessage } from '../messages';
 import { RoomWidgetHandler } from './RoomWidgetHandler';
@@ -20,11 +21,9 @@ export class RoomWidgetChatHandler extends RoomWidgetHandler implements IAvatarI
 
                 const roomObject = GetRoomEngine().getRoomObject(chatEvent.session.roomId, chatEvent.objectId, RoomObjectCategory.UNIT);
 
-                if(!roomObject) return;
-
-                const objectLocation = roomObject.getLocation();
-                const bubbleLocation = this.getBubbleLocation(chatEvent.session.roomId, objectLocation);
-                const userData = this.container.roomSession.userDataManager.getUserDataByIndex(chatEvent.objectId);
+                const objectLocation = roomObject ? roomObject.getLocation() : new Vector3d();
+                const bubbleLocation = GetRoomObjectScreenLocation(chatEvent.session.roomId, roomObject?.id, RoomObjectCategory.UNIT);
+                const userData = roomObject ? this.container.roomSession.userDataManager.getUserDataByIndex(chatEvent.objectId) : new RoomUserData(-1);
 
                 let username = '';
                 let avatarColor = 0;
@@ -64,7 +63,38 @@ export class RoomWidgetChatHandler extends RoomWidgetHandler implements IAvatarI
                 {
                     case RoomSessionChatEvent.CHAT_TYPE_RESPECT:
                         text = LocalizeText('widgets.chatbubble.respect', [ 'username' ], [ username ]);
+                        if(GetConfigurationManager().getValue('respect.options')['enabled'])
+                            PlaySound(GetConfigurationManager().getValue('respect.options')['sound'])
                         break;
+                    case RoomSessionChatEvent.CHAT_TYPE_PETREVIVE:
+                    case RoomSessionChatEvent.CHAT_TYPE_PET_REBREED_FERTILIZE:
+                    case RoomSessionChatEvent.CHAT_TYPE_PET_SPEED_FERTILIZE: {
+                        let textKey = 'widget.chatbubble.petrevived';
+
+                        if(chatType === RoomSessionChatEvent.CHAT_TYPE_PET_REBREED_FERTILIZE)
+                        {
+                            textKey = 'widget.chatbubble.petrefertilized;';
+                        }
+
+                        else if(chatType === RoomSessionChatEvent.CHAT_TYPE_PET_SPEED_FERTILIZE)
+                        {
+                            textKey = 'widget.chatbubble.petspeedfertilized';
+                        }
+
+                        let targetUserName: string = null;
+
+                        const newRoomObject = GetRoomEngine().getRoomObject(chatEvent.session.roomId, chatEvent.extraParam, RoomObjectCategory.UNIT);
+
+                        if(newRoomObject)
+                        {
+                            const newUserData = this.container.roomSession.userDataManager.getUserDataByIndex(roomObject.id);
+
+                            if(newUserData) targetUserName = newUserData.name;
+                        }
+
+                        text = LocalizeText(textKey, [ 'petName', 'userName' ], [ username, targetUserName ]);
+                        break;
+                    }
                     case RoomSessionChatEvent.CHAT_TYPE_PETRESPECT:
                         text = LocalizeText('widget.chatbubble.petrespect', [ 'petname' ], [ username ]);
                         break;
@@ -72,7 +102,7 @@ export class RoomWidgetChatHandler extends RoomWidgetHandler implements IAvatarI
                         text = LocalizeText('widget.chatbubble.pettreat', [ 'petname' ], [ username ]);
                         break;
                     case RoomSessionChatEvent.CHAT_TYPE_HAND_ITEM_RECEIVED:
-                        text = LocalizeText('widget.chatbubble.handitem', [ 'username', 'handitem' ], [ username, LocalizeText(('handitem' + chatEvent.extraParam))]);
+                        text = LocalizeText('widget.chatbubble.handitem', [ 'username', 'handitem' ], [ username, LocalizeText(('handitem' + chatEvent.extraParam)) ]);
                         break;
                     case RoomSessionChatEvent.CHAT_TYPE_MUTE_REMAINING: {
                         const hours = ((chatEvent.extraParam > 0) ? Math.floor((chatEvent.extraParam / 3600)) : 0).toString();
@@ -94,36 +124,6 @@ export class RoomWidgetChatHandler extends RoomWidgetHandler implements IAvatarI
     public processWidgetMessage(message: RoomWidgetMessage): RoomWidgetUpdateEvent
     {
         return null;
-    }
-
-    private getBubbleLocation(roomId: number, userLocation: IVector3D, canvasId = 1): INitroPoint
-    {
-        const geometry = GetRoomEngine().getRoomInstanceGeometry(roomId, canvasId);
-        const scale = GetRoomEngine().getRoomInstanceRenderingCanvasScale(roomId, canvasId);
-
-        let x = ((document.body.offsetWidth * scale) / 2);
-        let y = ((document.body.offsetHeight * scale) / 2);
-
-        if(geometry && userLocation)
-        {
-            const screenPoint = geometry.getScreenPoint(userLocation);
-
-            if(screenPoint)
-            {
-                x = (x + (screenPoint.x * scale));
-                y = (y + (screenPoint.y * scale));
-
-                const offsetPoint = GetRoomEngine().getRoomInstanceRenderingCanvasOffset(roomId, canvasId);
-
-                if(offsetPoint)
-                {
-                    x = (x + offsetPoint.x);
-                    y = (y + offsetPoint.y);
-                }
-            }
-        }
-
-        return new NitroPoint(x, y);
     }
 
     public getUserImage(figure: string): string

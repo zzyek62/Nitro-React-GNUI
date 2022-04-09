@@ -30,12 +30,15 @@ export const CatalogGuildSelectorWidgetView: FC<{}> = props =>
         if(!currentOffer) return;
 
         setPurchaseOptions(prevValue =>
-            {
-                const extraParamRequired = true;
-                const extraData = ((previewStuffData && previewStuffData.getValue(1)) || null);
+        {
+            const newValue = { ...prevValue };
 
-                return { ...prevValue, extraParamRequired, extraData, previewStuffData };
-            });
+            newValue.extraParamRequired = true;
+            newValue.extraData = ((previewStuffData && previewStuffData.getValue(1)) || null);
+            newValue.previewStuffData = previewStuffData;
+
+            return newValue;
+        });
     }, [ currentOffer, previewStuffData, setPurchaseOptions ]);
 
     useEffect(() =>

@@ -1,6 +1,5 @@
 import { HabboWebTools, RoomEnterEffect } from '@nitrots/nitro-renderer';
-import { CreateLinkEvent, GetConfiguration, GetNitroInstance, LocalizeText } from '..';
-import { CatalogPageName } from '../../components/catalog/common/CatalogPageName';
+import { CreateLinkEvent, GetConfiguration, GetNitroInstance, LocalizeText, PlaySound } from '..';
 import { NotificationAlertEvent, NotificationConfirmEvent } from '../../events';
 import { NotificationBubbleEvent } from '../../events/notification-center/NotificationBubbleEvent';
 import { DispatchUiEvent } from '../../hooks';
@@ -59,7 +58,7 @@ export class NotificationUtilities
     {
         let imageUrl = options.get('image');
 
-        if(!imageUrl) imageUrl = GetConfiguration<string>('image.library.notifications.url', '').replace('%image', type.replace(/\./g, '_'));
+        if(!imageUrl) imageUrl = GetConfiguration<string>('image.library.notifications.url', '').replace('%image%', type.replace(/\./g, '_'));
 
         return LocalizeText(imageUrl);
     }
@@ -77,15 +76,17 @@ export class NotificationUtilities
         const linkTitle = this.getNotificationPart(options, type, 'linkTitle', false);
         const linkUrl = this.getNotificationPart(options, type, 'linkUrl', false);
         const image = this.getNotificationImageUrl(options, type);
-
+        
         if(options.get('display') === 'BUBBLE')
         {
             this.showSingleBubble(LocalizeText(message), NotificationBubbleType.INFO, image, linkUrl);
         }
         else
         {
-            this.simpleAlert(message, NotificationAlertType.EVENT, linkUrl, linkTitle, title, image);
+            this.simpleAlert(message, type, linkUrl, linkTitle, title, image);
         }
+
+        if(options.get('sound')) PlaySound(options.get('sound'));
     }
 
     public static showSingleBubble(message: string, type: string, imageUrl: string = null, internalLink: string = null): void
@@ -99,7 +100,7 @@ export class NotificationUtilities
     {
         if(numGifts <= 0) return;
 
-        this.showSingleBubble(numGifts.toString(), NotificationBubbleType.CLUBGIFT, null, ('catalog/open/' + CatalogPageName.CLUB_GIFTS));
+        this.showSingleBubble(numGifts.toString(), NotificationBubbleType.CLUBGIFT, null, ('catalog/open/' + GetConfiguration('catalog.links')['hc.hc_gifts']));
     }
 
     public static handleMOTD(messages: string[]): void
@@ -129,9 +130,14 @@ export class NotificationUtilities
         DispatchUiEvent(new NotificationAlertEvent([ this.cleanText(message) ], type, clickUrl, clickUrlText, title, imageUrl));
     }
 
+    public static showNitroAlert(): void
+    {
+        DispatchUiEvent(new NotificationAlertEvent(null, NotificationAlertType.NITRO));
+    }
+
     public static showModeratorMessage(message: string, url: string = null, showHabboWay: boolean = true): void
     {
-        this.simpleAlert(message, NotificationAlertType.MODERATION, url, LocalizeText('mod.alert.link'), LocalizeText('mod.alert.title'));
+        this.simpleAlert(message, NotificationAlertType.DEFAULT, url, LocalizeText('mod.alert.link'), LocalizeText('mod.alert.title'));
     }
 
     public static handleModeratorCaution(message: string, url: string = null): void
@@ -151,7 +157,7 @@ export class NotificationUtilities
 
     public static handleHotelClosedMessage(open: number, minute: number, thrownOut: boolean): void
     {
-        this.simpleAlert( LocalizeText(('opening.hours.' + (thrownOut ? 'disconnected' : 'closed')), [ 'h', 'm'], [ this.getTimeZeroPadded(open), this.getTimeZeroPadded(minute) ]), NotificationAlertType.DEFAULT, null, null, LocalizeText('opening.hours.title'));
+        this.simpleAlert( LocalizeText(('opening.hours.' + (thrownOut ? 'disconnected' : 'closed')), [ 'h', 'm' ], [ this.getTimeZeroPadded(open), this.getTimeZeroPadded(minute) ]), NotificationAlertType.DEFAULT, null, null, LocalizeText('opening.hours.title'));
     }
 
     public static handleHotelMaintenanceMessage(minutesUntilMaintenance: number, duration: number): void

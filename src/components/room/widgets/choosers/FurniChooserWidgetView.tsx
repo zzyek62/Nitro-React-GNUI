@@ -1,6 +1,7 @@
+import { SecurityLevel } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useState } from 'react';
-import { LocalizeText, RoomObjectItem, RoomWidgetChooserContentEvent, RoomWidgetRequestWidgetMessage, RoomWidgetUpdateRoomObjectEvent } from '../../../../api';
-import { BatchUpdates, UseEventDispatcherHook } from '../../../../hooks';
+import { GetSessionDataManager, LocalizeText, RoomObjectItem, RoomWidgetChooserContentEvent, RoomWidgetRequestWidgetMessage, RoomWidgetUpdateRoomObjectEvent } from '../../../../api';
+import { UseEventDispatcherHook } from '../../../../hooks';
 import { useRoomContext } from '../../RoomContext';
 import { ChooserWidgetView } from './ChooserWidgetView';
 
@@ -16,20 +17,17 @@ export const FurniChooserWidgetView: FC<{}> = props =>
         if(!isVisible) return;
 
         setRefreshTimeout(prevValue =>
-            {
-                if(prevValue) clearTimeout(prevValue);
+        {
+            if(prevValue) clearTimeout(prevValue);
 
-                return setTimeout(() => widgetHandler.processWidgetMessage(new RoomWidgetRequestWidgetMessage(RoomWidgetRequestWidgetMessage.FURNI_CHOOSER)), 100);
-            });
+            return setTimeout(() => widgetHandler.processWidgetMessage(new RoomWidgetRequestWidgetMessage(RoomWidgetRequestWidgetMessage.FURNI_CHOOSER)), 100);
+        });
     }, [ isVisible, widgetHandler ]);
 
     const onRoomWidgetChooserContentEvent = useCallback((event: RoomWidgetChooserContentEvent) =>
     {
-        BatchUpdates(() =>
-        {
-            setItems(event.items);
-            setIsVisible(true);
-        });
+        setItems(event.items);
+        setIsVisible(true);
     }, []);
 
     UseEventDispatcherHook(RoomWidgetChooserContentEvent.FURNI_CHOOSER_CONTENT, eventDispatcher, onRoomWidgetChooserContentEvent);
@@ -52,14 +50,11 @@ export const FurniChooserWidgetView: FC<{}> = props =>
 
     const close = useCallback(() =>
     {
-        BatchUpdates(() =>
-        {
-            setIsVisible(false);
-            setItems(null);
-        });
+        setIsVisible(false);
+        setItems(null);
     }, []);
 
     if(!items) return null;
 
-    return <ChooserWidgetView title={ LocalizeText('widget.chooser.furni.title') } displayItemId={ true } items={ items } onCloseClick={ close } />;
+    return <ChooserWidgetView title={ LocalizeText('widget.chooser.furni.title') } displayItemId={ GetSessionDataManager().hasSecurity(SecurityLevel.MODERATOR) } items={ items } onCloseClick={ close } />;
 }

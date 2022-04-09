@@ -1,9 +1,8 @@
 import { CameraPublishStatusMessageEvent, CameraPurchaseOKMessageEvent, CameraStorageUrlMessageEvent, PublishPhotoMessageComposer, PurchasePhotoMessageComposer } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useEffect, useState } from 'react';
-import { GetConfiguration, GetRoomEngine, LocalizeText, SendMessageComposer } from '../../../../api';
+import { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import { CreateLinkEvent, GetConfiguration, GetRoomEngine, LocalizeText, SendMessageComposer } from '../../../../api';
 import { Button, Column, Flex, LayoutCurrencyIcon, LayoutImage, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
-import { InventoryEvent } from '../../../../events';
-import { BatchUpdates, DispatchUiEvent, UseMessageEventHook } from '../../../../hooks';
+import { UseMessageEventHook } from '../../../../hooks';
 
 export interface CameraWidgetCheckoutViewProps
 {
@@ -23,13 +22,12 @@ export const CameraWidgetCheckoutView: FC<CameraWidgetCheckoutViewProps> = props
     const [ isWaiting, setIsWaiting ] = useState(false);
     const [ publishCooldown, setPublishCooldown ] = useState(0);
 
+    const publishDisabled = useMemo(() => GetConfiguration<boolean>('camera.publish.disabled', false), []);
+
     const onCameraPurchaseOKMessageEvent = useCallback((event: CameraPurchaseOKMessageEvent) =>
     {
-        BatchUpdates(() =>
-        {
-            setPicturesBought(value => (value + 1));
-            setIsWaiting(false);
-        });
+        setPicturesBought(value => (value + 1));
+        setIsWaiting(false);
     }, []);
 
     UseMessageEventHook(CameraPurchaseOKMessageEvent, onCameraPurchaseOKMessageEvent);
@@ -38,13 +36,10 @@ export const CameraWidgetCheckoutView: FC<CameraWidgetCheckoutViewProps> = props
     {
         const parser = event.getParser();
 
-        BatchUpdates(() =>
-        {
-            setPublishUrl(parser.extraDataId);
-            setPublishCooldown(parser.secondsToWait);
-            setWasPicturePublished(parser.ok);
-            setIsWaiting(false);
-        });
+        setPublishUrl(parser.extraDataId);
+        setPublishCooldown(parser.secondsToWait);
+        setWasPicturePublished(parser.ok);
+        setIsWaiting(false);
     }, []);
 
     UseMessageEventHook(CameraPublishStatusMessageEvent, onCameraPublishStatusMessageEvent);
@@ -98,14 +93,14 @@ export const CameraWidgetCheckoutView: FC<CameraWidgetCheckoutViewProps> = props
             <NitroCardContentView>
                 <Flex center>
                     { (pictureUrl && pictureUrl.length) &&
-                        <LayoutImage fit={ false } className="picture-preview border" imageUrl={ pictureUrl } /> }
+                        <LayoutImage className="picture-preview border" imageUrl={ pictureUrl } /> }
                     { (!pictureUrl || !pictureUrl.length) &&
                         <Flex center className="picture-preview border">
                             <Text bold>{ LocalizeText('camera.loading') }</Text>
                         </Flex> }
                 </Flex>
                 <Flex justifyContent="between" alignItems="center" className="bg-muted rounded p-2">
-                    <Column gap={ 1 }>
+                    <Column size={ publishDisabled ? 10 : 6 } gap={ 1 }>
                         <Text bold>
                             { LocalizeText('camera.purchase.header') }
                         </Text>
@@ -126,13 +121,14 @@ export const CameraWidgetCheckoutView: FC<CameraWidgetCheckoutViewProps> = props
                         { (picturesBought > 0) &&
                             <Text>
                                 <Text bold>{ LocalizeText('camera.purchase.count.info') }</Text> { picturesBought }
-                                <u className="ms-1 cursor-pointer" onClick={ () => DispatchUiEvent(new InventoryEvent(InventoryEvent.SHOW_INVENTORY)) }>{ LocalizeText('camera.open.inventory') }</u>
+                                <u className="ms-1 cursor-pointer" onClick={ () => CreateLinkEvent('inventory/open') }>{ LocalizeText('camera.open.inventory') }</u>
                             </Text> }
                     </Column>
                     <Flex alignItems="center">
                         <Button variant="success" disabled={ isWaiting } onClick={ event => processAction('buy') }>{ LocalizeText(!picturesBought ? 'buy' : 'camera.buy.another.button.text') }</Button>
                     </Flex>
                 </Flex>
+                { !publishDisabled &&
                 <Flex justifyContent="between" alignItems="center" className="bg-muted rounded p-2">
                     <Column gap={ 1 }>
                         <Text bold>
@@ -154,11 +150,11 @@ export const CameraWidgetCheckoutView: FC<CameraWidgetCheckoutViewProps> = props
                     </Column>
                     { !wasPicturePublished &&
                         <Flex className="d-flex align-items-end">
-                            <Button variant="success" size="sm" disabled={ (isWaiting || (publishCooldown > 0)) } onClick={ event => processAction('publish') }>
+                            <Button variant="success" disabled={ (isWaiting || (publishCooldown > 0)) } onClick={ event => processAction('publish') }>
                                 { LocalizeText('camera.publish.button.text') }
                             </Button>
                         </Flex> }
-                </Flex>
+                </Flex> }
                 <Text center>{ LocalizeText('camera.warning.disclaimer') }</Text>
                 <Flex justifyContent="end">
                     <Button onClick={ event => processAction('cancel') }>{ LocalizeText('generic.cancel') }</Button>

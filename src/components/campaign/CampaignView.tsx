@@ -1,14 +1,14 @@
 import { CampaignCalendarData, CampaignCalendarDataMessageEvent, CampaignCalendarDoorOpenedMessageEvent, OpenCampaignCalendarDoorAsStaffComposer, OpenCampaignCalendarDoorComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { AddEventLinkTracker, RemoveLinkEventTracker, SendMessageComposer } from '../../api';
-import { BatchUpdates, UseMessageEventHook } from '../../hooks';
+import { AddEventLinkTracker, CalendarItem, RemoveLinkEventTracker, SendMessageComposer } from '../../api';
+import { UseMessageEventHook } from '../../hooks';
 import { CalendarView } from './CalendarView';
 
 export const CampaignView: FC<{}> = props =>
 {
     const [ calendarData, setCalendarData ] = useState<CampaignCalendarData>(null);
     const [ lastOpenAttempt, setLastOpenAttempt ] = useState<number>(-1);
-    const [ receivedProducts, setReceivedProducts ] = useState<Map<number, string>>(new Map());
+    const [ receivedProducts, setReceivedProducts ] = useState<Map<number, CalendarItem>>(new Map());
     const [ isCalendarOpen, setCalendarOpen ] = useState(false);
     
     const onCampaignCalendarDataMessageEvent = useCallback((event: CampaignCalendarDataMessageEvent) =>
@@ -31,28 +31,25 @@ export const CampaignView: FC<{}> = props =>
 
         if(parser.doorOpened)
         {
-            BatchUpdates(() =>
+            setCalendarData(prev => 
             {
-                setCalendarData(prev => 
-                    {
-                        const copy = prev.clone();
-                        copy.openedDays.push(lastOpenAttempt);
-                        
-                        return copy;
-                    });
-        
-                    setReceivedProducts(prev =>
-                    {
-                        const copy = new Map(prev);
-                        copy.set(lastAttempt, parser.furnitureClassName);
-                        
-                        return copy;
-                    });
+                const copy = prev.clone();
+                copy.openedDays.push(lastOpenAttempt);
+                    
+                return copy;
+            });
+    
+            setReceivedProducts(prev =>
+            {
+                const copy = new Map(prev);
+                copy.set(lastAttempt, new CalendarItem(parser.productName, parser.customImage,parser.furnitureClassName));
+                    
+                return copy;
             });
         }
 
         setLastOpenAttempt(-1);
-    }, [lastOpenAttempt]);
+    }, [ lastOpenAttempt ]);
 
     UseMessageEventHook(CampaignCalendarDoorOpenedMessageEvent, onCampaignCalendarDoorOpenedMessageEvent);
 
@@ -71,7 +68,7 @@ export const CampaignView: FC<{}> = props =>
         {
             SendMessageComposer(new OpenCampaignCalendarDoorComposer(calendarData.campaignName, id));
         }
-    }, [calendarData]);
+    }, [ calendarData ]);
 
     const onCalendarClose = useCallback(() =>
     {
@@ -101,12 +98,12 @@ export const CampaignView: FC<{}> = props =>
         {
             RemoveLinkEventTracker(linkTracker);
         }
-    }, [onLinkReceived]);
+    }, [ onLinkReceived ]);
 
     return (
         <>
-            {(calendarData && isCalendarOpen) && 
-                <CalendarView close={onCalendarClose} campaignName={calendarData.campaignName} currentDay={calendarData.currentDay} numDays={calendarData.campaignDays} openedDays={calendarData.openedDays} missedDays={calendarData.missedDays} openPackage={openPackage} receivedProducts={receivedProducts} />
+            { (calendarData && isCalendarOpen) && 
+                <CalendarView close={ onCalendarClose } campaignName={ calendarData.campaignName } currentDay={ calendarData.currentDay } numDays={ calendarData.campaignDays } openedDays={ calendarData.openedDays } missedDays={ calendarData.missedDays } openPackage={ openPackage } receivedProducts={ receivedProducts } />
             }
         </>
     )

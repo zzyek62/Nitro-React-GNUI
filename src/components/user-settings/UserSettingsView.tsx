@@ -1,35 +1,14 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { NitroSettingsEvent, UserSettingsCameraFollowComposer, UserSettingsEvent, UserSettingsOldChatComposer, UserSettingsRoomInvitesComposer, UserSettingsSoundComposer } from '@nitrots/nitro-renderer';
+import { ILinkEventTracker, NitroSettingsEvent, UserSettingsCameraFollowComposer, UserSettingsEvent, UserSettingsOldChatComposer, UserSettingsRoomInvitesComposer, UserSettingsSoundComposer } from '@nitrots/nitro-renderer';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { LocalizeText, SendMessageComposer } from '../../api';
+import { AddEventLinkTracker, LocalizeText, RemoveLinkEventTracker, SendMessageComposer } from '../../api';
 import { Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../common';
-import { UserSettingsUIEvent } from '../../events';
-import { DispatchUiEvent, UseMessageEventHook, UseUiEvent } from '../../hooks';
+import { DispatchMainEvent, DispatchUiEvent, UseMessageEventHook } from '../../hooks';
 
 export const UserSettingsView: FC<{}> = props =>
 {
     const [ isVisible, setIsVisible ] = useState(false);
     const [ userSettings, setUserSettings ] = useState<NitroSettingsEvent>(null);
-
-    const onUserSettingsUIEvent = useCallback((event: UserSettingsUIEvent) =>
-    {
-        switch(event.type)
-        {
-            case UserSettingsUIEvent.SHOW_USER_SETTINGS:
-                setIsVisible(true);
-                return;
-            case UserSettingsUIEvent.HIDE_USER_SETTINGS:
-                setIsVisible(false);
-                return;
-            case UserSettingsUIEvent.TOGGLE_USER_SETTINGS:
-                setIsVisible(value => !value);
-                return;
-        }
-    }, []);
-
-    UseUiEvent(UserSettingsUIEvent.SHOW_USER_SETTINGS, onUserSettingsUIEvent);
-    UseUiEvent(UserSettingsUIEvent.HIDE_USER_SETTINGS, onUserSettingsUIEvent);
-    UseUiEvent(UserSettingsUIEvent.TOGGLE_USER_SETTINGS, onUserSettingsUIEvent);
 
     const onUserSettingsEvent = useCallback((event: UserSettingsEvent) =>
     {
@@ -46,6 +25,7 @@ export const UserSettingsView: FC<{}> = props =>
         settingsEvent.chatType = parser.chatType;
 
         setUserSettings(settingsEvent);
+        DispatchMainEvent(settingsEvent);
     }, []);
 
     UseMessageEventHook(UserSettingsEvent, onUserSettingsEvent);
@@ -92,7 +72,8 @@ export const UserSettingsView: FC<{}> = props =>
         }
 
         if(doUpdate) setUserSettings(clone);
-    }, [userSettings]);
+        DispatchMainEvent(clone)
+    }, [ userSettings ]);
 
     const saveRangeSlider = useCallback((type: string) =>
     {
@@ -102,20 +83,50 @@ export const UserSettingsView: FC<{}> = props =>
                 SendMessageComposer(new UserSettingsSoundComposer(Math.round(userSettings.volumeSystem), Math.round(userSettings.volumeFurni), Math.round(userSettings.volumeTrax)));
                 break;
         }
-    }, [userSettings]);
+    }, [ userSettings ]);
+
+    useEffect(() =>
+    {
+        const linkTracker: ILinkEventTracker = {
+            linkReceived: (url: string) =>
+            {
+                const parts = url.split('/');
+
+                if(parts.length < 2) return;
+        
+                switch(parts[1])
+                {
+                    case 'show':
+                        setIsVisible(true);
+                        return;
+                    case 'hide':
+                        setIsVisible(false);
+                        return;
+                    case 'toggle':
+                        setIsVisible(prevValue => !prevValue);
+                        return;
+                }
+            },
+            eventUrlPrefix: 'user-settings/'
+        };
+
+        AddEventLinkTracker(linkTracker);
+
+        return () => RemoveLinkEventTracker(linkTracker);
+    }, []);
 
     useEffect(() =>
     {
         if(!userSettings) return;
 
         DispatchUiEvent(userSettings);
-    }, [userSettings]);
+    }, [ userSettings ]);
 
     if(!isVisible) return null;
 
     return (
         <NitroCardView uniqueKey="user-settings" className="user-settings-window" theme="primary-slim">
-            <NitroCardHeaderView headerText={ LocalizeText('widget.memenu.settings.title') } onCloseClick={event => processAction('close_view')} />
+            <NitroCardHeaderView headerText={ LocalizeText('widget.memenu.settings.title') } onCloseClick={ event => processAction('close_view') } />
             <NitroCardContentView className="text-black">
                 <Column gap={ 1 }>
                     <Flex alignItems="center" gap={ 1 }>

@@ -2,7 +2,6 @@ import { MouseEventType, TouchEventType } from '@nitrots/nitro-renderer';
 import { CSSProperties, FC, Key, MouseEvent as ReactMouseEvent, TouchEvent as ReactTouchEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Base } from '..';
-import { BatchUpdates } from '../../hooks';
 import { DraggableWindowPosition } from './DraggableWindowPosition';
 
 const CURRENT_WINDOWS: HTMLElement[] = [];
@@ -16,12 +15,14 @@ export interface DraggableWindowProps
     handleSelector?: string;
     windowPosition?: string;
     disableDrag?: boolean;
-    dragStyle?: CSSProperties
+    dragStyle?: CSSProperties;
+    offsetLeft?: number;
+    offsetTop?: number;
 }
 
 export const DraggableWindow: FC<DraggableWindowProps> = props =>
 {
-    const { uniqueKey = null, handleSelector = '.drag-handler', windowPosition = DraggableWindowPosition.CENTER, disableDrag = false, dragStyle = {}, children = null } = props;
+    const { uniqueKey = null, handleSelector = '.drag-handler', windowPosition = DraggableWindowPosition.CENTER, disableDrag = false, dragStyle = {}, children = null, offsetLeft = 0, offsetTop = 0 } = props;
     const [ delta, setDelta ] = useState<{ x: number, y: number }>(null);
     const [ offset, setOffset ] = useState<{ x: number, y: number }>(null);
     const [ start, setStart ] = useState<{ x: number, y: number }>({ x: 0, y: 0 });
@@ -106,8 +107,8 @@ export const DraggableWindow: FC<DraggableWindowProps> = props =>
     {
         if(!elementRef.current || !dragHandler) return;
         
-        let offsetX  = (offset.x + delta.x);
-        let offsetY  = (offset.y + delta.y);
+        let offsetX = (offset.x + delta.x);
+        let offsetY = (offset.y + delta.y);
 
         const left = elementRef.current.offsetLeft + offsetX;
         const top = elementRef.current.offsetTop + offsetY;
@@ -132,12 +133,9 @@ export const DraggableWindow: FC<DraggableWindowProps> = props =>
             offsetX = (document.body.offsetWidth - elementRef.current.offsetWidth) - elementRef.current.offsetLeft;
         }
 
-        BatchUpdates(() =>
-        {
-            setDelta({ x: 0, y: 0 });
-            setOffset({ x: offsetX, y: offsetY });
-            setIsDragging(false);
-        });
+        setDelta({ x: 0, y: 0 });
+        setOffset({ x: offsetX, y: offsetY });
+        setIsDragging(false);
 
         if(uniqueKey !== null) POS_MEMORY.set(uniqueKey, { x: offsetX, y: offsetY });
     }, [ dragHandler, delta, offset, uniqueKey ]);
@@ -175,16 +173,16 @@ export const DraggableWindow: FC<DraggableWindowProps> = props =>
         switch(windowPosition)
         {
             case DraggableWindowPosition.TOP_CENTER:
-                element.style.top = '50px';
-                element.style.left = `calc(50vw - ${ (element.offsetWidth / 2) }px)`;
+                element.style.top = 50 + offsetTop + 'px';
+                element.style.left = `calc(50vw - ${ (element.offsetWidth / 2 + offsetLeft) }px)`;
                 break;
             case DraggableWindowPosition.CENTER:
-                element.style.top = `calc(50vh - ${ (element.offsetHeight / 2) }px)`;
-                element.style.left = `calc(50vw - ${ (element.offsetWidth / 2) }px)`;
+                element.style.top = `calc(50vh - ${ (element.offsetHeight / 2) + offsetTop }px)`;
+                element.style.left = `calc(50vw - ${ (element.offsetWidth / 2) + offsetLeft }px)`;
                 break;
             case DraggableWindowPosition.TOP_LEFT:
-                element.style.top = '50px';
-                element.style.left = '50px';
+                element.style.top = 50 + offsetTop + 'px';
+                element.style.left = 50 + offsetLeft + 'px';
                 break;
         }
 
@@ -199,11 +197,8 @@ export const DraggableWindow: FC<DraggableWindowProps> = props =>
             }
         }
 
-        BatchUpdates(() =>
-        {
-            setDelta({ x: 0, y: 0 });
-            setOffset({ x: offsetX, y: offsetY });
-        });
+        setDelta({ x: 0, y: 0 });
+        setOffset({ x: offsetX, y: offsetY });
 
         return () =>
         {
@@ -211,7 +206,7 @@ export const DraggableWindow: FC<DraggableWindowProps> = props =>
 
             if(index >= 0) CURRENT_WINDOWS.splice(index, 1);
         }
-    }, [ handleSelector, windowPosition, uniqueKey, disableDrag, bringToTop ]);
+    }, [ handleSelector, windowPosition, uniqueKey, disableDrag, offsetLeft, offsetTop, bringToTop ]);
 
     useEffect(() =>
     {
@@ -259,8 +254,8 @@ export const DraggableWindow: FC<DraggableWindowProps> = props =>
 
     return (
         createPortal(
-        <Base position="absolute" innerRef={ elementRef } className="draggable-window" onMouseDownCapture={ onMouseDown } onTouchStartCapture={ onTouchStart } style={ dragStyle }>
-            { children }
-        </Base>, document.getElementById('draggable-windows-container'))
+            <Base position="absolute" innerRef={ elementRef } className="draggable-window" onMouseDownCapture={ onMouseDown } onTouchStartCapture={ onTouchStart } style={ dragStyle }>
+                { children }
+            </Base>, document.getElementById('draggable-windows-container'))
     );
 }

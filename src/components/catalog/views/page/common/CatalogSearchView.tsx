@@ -4,7 +4,6 @@ import { FC, useCallback, useEffect, useState } from 'react';
 import { GetSessionDataManager, LocalizeText } from '../../../../../api';
 import { Button } from '../../../../../common/Button';
 import { Flex } from '../../../../../common/Flex';
-import { BatchUpdates } from '../../../../../hooks';
 import { useCatalogContext } from '../../../CatalogContext';
 import { CatalogPage } from '../../../common/CatalogPage';
 import { CatalogType } from '../../../common/CatalogType';
@@ -24,20 +23,17 @@ export const CatalogSearchView: FC<{}> = props =>
 
     const updateSearchValue = (value: string) =>
     {
-        BatchUpdates(() =>
+        if(!value || !value.length)
         {
-            if(!value || !value.length)
-            {
-                setSearchValue('');
+            setSearchValue('');
 
-                if(searchResult) setSearchResult(null);
-            }
-            else
-            {
-                setSearchValue(value);
-                setNeedsProcessing(true);
-            }
-        });
+            if(searchResult) setSearchResult(null);
+        }
+        else
+        {
+            setSearchValue(value);
+            setNeedsProcessing(true);
+        }
     }
 
     const processSearch = useCallback((search: string) =>
@@ -96,11 +92,8 @@ export const CatalogSearchView: FC<{}> = props =>
 
         FilterCatalogNode(search, foundFurniLines, rootNode, nodes);
 
-        BatchUpdates(() =>
-        {
-            setCurrentPage((new CatalogPage(-1, 'default_3x3', new PageLocalization([], []), offers, false, 1) as ICatalogPage));
-            setSearchResult(new SearchResult(search, offers, nodes.filter(node => (node.isVisible))));
-        });
+        setCurrentPage((new CatalogPage(-1, 'default_3x3', new PageLocalization([], []), offers, false, 1) as ICatalogPage));
+        setSearchResult(new SearchResult(search, offers, nodes.filter(node => (node.isVisible))));
     }, [ offersToNodes, currentType, rootNode, setCurrentPage, setSearchResult ]);
 
     useEffect(() =>
@@ -118,11 +111,11 @@ export const CatalogSearchView: FC<{}> = props =>
                 <input type="text" className="form-control form-control-sm" placeholder={ LocalizeText('generic.search') } value={ searchValue } onChange={ event => updateSearchValue(event.target.value) } onKeyDown={ event => ((event.code === 'Enter') || (event.code === 'NumpadEnter')) && processSearch(searchValue) } />
             </Flex>
             { (!searchValue || !searchValue.length) &&
-                <Button variant="primary" size="sm" className="catalog-search-button">
+                <Button variant="primary" className="catalog-search-button">
                     <FontAwesomeIcon icon="search" />
                 </Button> }
             { searchValue && !!searchValue.length &&
-                <Button variant="primary" size="sm" className="catalog-search-button" onClick={ event => updateSearchValue('') }>
+                <Button variant="primary" className="catalog-search-button" onClick={ event => updateSearchValue('') }>
                     <FontAwesomeIcon icon="times" />
                 </Button> }
         </Flex>

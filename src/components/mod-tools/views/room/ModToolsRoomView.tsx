@@ -3,7 +3,7 @@ import { FC, useCallback, useEffect, useState } from 'react';
 import { SendMessageComposer, TryVisitRoom } from '../../../../api';
 import { Button, Column, DraggableWindowPosition, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
 import { ModToolsOpenRoomChatlogEvent } from '../../../../events/mod-tools/ModToolsOpenRoomChatlogEvent';
-import { BatchUpdates, DispatchUiEvent, UseMessageEventHook } from '../../../../hooks';
+import { DispatchUiEvent, UseMessageEventHook } from '../../../../hooks';
 
 interface ModToolsRoomViewProps
 {
@@ -36,15 +36,12 @@ export const ModToolsRoomView: FC<ModToolsRoomViewProps> = props =>
 
         if(!parser || parser.data.flatId !== roomId) return;
 
-        BatchUpdates(() =>
-        {
-            setLoadedRoomId(parser.data.flatId);
-            setName(parser.data.room.name);
-            setOwnerId(parser.data.ownerId);
-            setOwnerName(parser.data.ownerName);
-            setOwnerInRoom(parser.data.ownerInRoom);
-            setUsersInRoom(parser.data.userCount);
-        });
+        setLoadedRoomId(parser.data.flatId);
+        setName(parser.data.room.name);
+        setOwnerId(parser.data.ownerId);
+        setOwnerName(parser.data.ownerName);
+        setOwnerInRoom(parser.data.ownerInRoom);
+        setUsersInRoom(parser.data.userCount);
     }, [ roomId ]);
 
     UseMessageEventHook(ModeratorRoomInfoEvent, onModtoolRoomInfoEvent);
@@ -59,12 +56,13 @@ export const ModToolsRoomView: FC<ModToolsRoomViewProps> = props =>
                 if(message.trim().length === 0) return;
 
                 SendMessageComposer(new ModeratorActionMessageComposer(ModeratorActionMessageComposer.ACTION_ALERT, message, ''));
+                SendMessageComposer(new ModerateRoomMessageComposer(roomId, lockRoom ? 1 : 0, changeRoomName ? 1 : 0, kickUsers ? 1 : 0));
                 return;
             case 'send_message':
                 if(message.trim().length === 0) return;
 
                 SendMessageComposer(new ModeratorActionMessageComposer(ModeratorActionMessageComposer.ACTION_MESSAGE, message, ''));
-                SendMessageComposer(new ModerateRoomMessageComposer(roomId, lockRoom ? 1 : 0, changeRoomName ? 1 : 0, kickUsers ? 1 : 0))
+                SendMessageComposer(new ModerateRoomMessageComposer(roomId, lockRoom ? 1 : 0, changeRoomName ? 1 : 0, kickUsers ? 1 : 0));
                 return;
         }
     }, [ changeRoomName, kickUsers, lockRoom, message, roomId ]);
@@ -78,7 +76,7 @@ export const ModToolsRoomView: FC<ModToolsRoomViewProps> = props =>
     }, [ roomId, infoRequested, setInfoRequested ]);
 
     return (
-        <NitroCardView className="nitro-mod-tools-room" theme="primary-slim" windowPosition={ DraggableWindowPosition.TOP_LEFT}>
+        <NitroCardView className="nitro-mod-tools-room" theme="primary-slim" windowPosition={ DraggableWindowPosition.TOP_LEFT }>
             <NitroCardHeaderView headerText={ 'Room Info' + (name ? ': ' + name : '') } onCloseClick={ event => onCloseClick() } />
             <NitroCardContentView className="text-black">
                 <Flex gap={ 2 }>

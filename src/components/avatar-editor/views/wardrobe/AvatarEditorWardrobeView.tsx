@@ -1,6 +1,6 @@
 import { IAvatarFigureContainer, SaveWardrobeOutfitMessageComposer } from '@nitrots/nitro-renderer';
 import { Dispatch, FC, SetStateAction, useCallback, useMemo } from 'react';
-import { GetAvatarRenderManager, GetClubMemberLevel, SendMessageComposer } from '../../../../api';
+import { GetAvatarRenderManager, GetClubMemberLevel, LocalizeText, SendMessageComposer } from '../../../../api';
 import { AutoGrid, Base, Button, Flex, LayoutAvatarImageView, LayoutCurrencyIcon, LayoutGridItem } from '../../../../common';
 import { FigureData } from '../../common/FigureData';
 
@@ -47,25 +47,25 @@ export const AvatarEditorWardrobeView: FC<AvatarEditorWardrobeViewProps> = props
         const items: JSX.Element[] = [];
 
         savedFigures.forEach(([ figureContainer, gender ], index) =>
-            {
-                let clubLevel = 0;
+        {
+            let clubLevel = 0;
 
-                if(figureContainer) clubLevel = GetAvatarRenderManager().getFigureClubLevel(figureContainer, gender);
+            if(figureContainer) clubLevel = GetAvatarRenderManager().getFigureClubLevel(figureContainer, gender);
 
-                items.push(
-                    <LayoutGridItem key={ index } position="relative" overflow="hidden" className="nitro-avatar-editor-wardrobe-figure-preview">
+            items.push(
+                <LayoutGridItem key={ index } position="relative" overflow="hidden" className="nitro-avatar-editor-wardrobe-figure-preview">
+                    { figureContainer &&
+                    <LayoutAvatarImageView figure={ figureContainer.getFigureString() } gender={ gender } direction={ 2 } /> }
+                    <Base className="avatar-shadow" />
+                    { (clubLevel > 0) && <LayoutCurrencyIcon className="position-absolute top-1 start-1" type="hc" /> }
+                    <Flex gap={ 1 } className="button-container">
+                        <Button variant="link" fullWidth onClick={ event => saveFigureAtWardrobeIndex(index) }>{ LocalizeText('avatareditor.wardrobe.save') }</Button>
                         { figureContainer &&
-                            <LayoutAvatarImageView figure={ figureContainer.getFigureString() } gender={ gender } direction={ 2 } /> }
-                        <Base className="avatar-shadow" />
-                        { (clubLevel > 0) && <LayoutCurrencyIcon className="position-absolute top-1 start-1" type="hc" /> }
-                        <Flex gap={ 1 } className="button-container">
-                            <Button variant="link" fullWidth onClick={ event => saveFigureAtWardrobeIndex(index) }>Save</Button>
-                            { figureContainer &&
-                                <Button variant="link" fullWidth onClick={ event => wearFigureAtIndex(index) } disabled={ (clubLevel > GetClubMemberLevel()) }>Use</Button> }
-                        </Flex>
-                    </LayoutGridItem>
-                );
-            });
+                        <Button variant="link" fullWidth onClick={ event => wearFigureAtIndex(index) } disabled={ (clubLevel > GetClubMemberLevel()) }>{ LocalizeText('generic_usable.button.use') }</Button> }
+                    </Flex>
+                </LayoutGridItem>
+            );
+        });
 
         return items;
     }, [ savedFigures, saveFigureAtWardrobeIndex, wearFigureAtIndex ]);

@@ -23,11 +23,13 @@ export const CatalogSpinnerWidgetView: FC<{}> = props =>
         if(value === quantity) return;
 
         setPurchaseOptions(prevValue =>
-            {
-                const quantity = value;
+        {
+            const newValue = { ...prevValue };
 
-                return { ...prevValue, quantity };
-            });
+            newValue.quantity = value;
+
+            return newValue;
+        });
     }
 
     if(!currentOffer || !currentOffer.bundlePurchaseAllowed) return null;
@@ -37,7 +39,7 @@ export const CatalogSpinnerWidgetView: FC<{}> = props =>
             <Text>{ LocalizeText('catalog.bundlewidget.spinner.select.amount') }</Text>
             <Flex alignItems="center" gap={ 1 }>
                 <FontAwesomeIcon icon="caret-left" className="text-black cursor-pointer" onClick={ event => updateQuantity(quantity - 1) } />
-                <input type="number" className="form-control form-control-sm quantity-input" value={ quantity } onChange={ event => updateQuantity(event.target.valueAsNumber)} />
+                <input type="number" className="form-control form-control-sm quantity-input" value={ quantity } onChange={ event => updateQuantity(event.target.valueAsNumber) } />
                 <FontAwesomeIcon icon="caret-right" className="text-black cursor-pointer" onClick={ event => updateQuantity(quantity + 1) } />
             </Flex>
         </>

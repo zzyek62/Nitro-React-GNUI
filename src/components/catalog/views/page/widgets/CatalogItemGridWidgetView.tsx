@@ -1,10 +1,8 @@
 import { FC } from 'react';
-import { AutoGrid, AutoGridProps } from '../../../../../common/AutoGrid';
-import { CatalogSetExtraPurchaseParameterEvent } from '../../../../../events';
-import { DispatchUiEvent } from '../../../../../hooks';
+import { ProductTypeEnum } from '../../../../../api';
+import { AutoGrid, AutoGridProps } from '../../../../../common';
 import { useCatalogContext } from '../../../CatalogContext';
 import { IPurchasableOffer } from '../../../common/IPurchasableOffer';
-import { ProductTypeEnum } from '../../../common/ProductTypeEnum';
 import { CatalogGridOfferView } from '../common/CatalogGridOfferView';
 
 interface CatalogItemGridWidgetViewProps extends AutoGridProps
@@ -15,7 +13,7 @@ interface CatalogItemGridWidgetViewProps extends AutoGridProps
 export const CatalogItemGridWidgetView: FC<CatalogItemGridWidgetViewProps> = props =>
 {
     const { columnCount = 5, children = null, ...rest } = props;
-    const { currentOffer = null, setCurrentOffer = null, currentPage = null } = useCatalogContext();
+    const { currentOffer = null, setCurrentOffer = null, currentPage = null, setPurchaseOptions = null } = useCatalogContext();
 
     if(!currentPage) return null;
 
@@ -29,7 +27,14 @@ export const CatalogItemGridWidgetView: FC<CatalogItemGridWidgetViewProps> = pro
 
         if(offer.product && (offer.product.productType === ProductTypeEnum.WALL))
         {
-            DispatchUiEvent(new CatalogSetExtraPurchaseParameterEvent(offer.product.extraParam));
+            setPurchaseOptions(prevValue =>
+            {
+                const newValue = { ...prevValue };
+    
+                newValue.extraData = (offer.product.extraParam || null);
+    
+                return newValue;
+            });
         }
     }
 
