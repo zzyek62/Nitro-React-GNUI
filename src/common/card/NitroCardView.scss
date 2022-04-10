@@ -53,15 +53,15 @@ $nitro-card-tabs-height: 33px;
 
             .nav-item {
                 padding: $nav-link-padding-y $nav-link-padding-x;
-                background-color: $muted;
-                color: #fff;
+                background-color: #1c1c1c;
+                color: #9b9b9b;
                 z-index: 1;
                 margin-bottom: -1px;
 
                 &.active {
                     background-color: #edb830;
-                    border-color: #453e3b #453e3b #453e3b !important;
-                    border-bottom: 1px solid black;
+                    border-color: #242424 !important;
+                    color: #fff;
 
                     &:before {
                         background: rgba(255, 255, 255, .29);
@@ -78,7 +78,7 @@ $nitro-card-tabs-height: 33px;
                     left: 0;
                     right: 0;
                     margin: auto;
-                    background: rgba(255, 255, 255, .29);
+                    background: rgba(255, 255, 255, .07);
                     z-index: 1;
                 }
             }
@@ -183,7 +183,7 @@ $nitro-card-tabs-height: 33px;
     height: 100%;
     min-height: 39px;
     max-height: 39px;
-    border-bottom: 1px solid #453e3b;
+    border-bottom: 1px solid #242424;
 }
 
 .nitro-card-accordion-set {
@@ -201,5 +201,5 @@ $nitro-card-tabs-height: 33px;
 }
 
 .gnui-card-tabs-border {
-    border: 1px solid black !important;
+    border: 1px solid #242424 !important;
 }
