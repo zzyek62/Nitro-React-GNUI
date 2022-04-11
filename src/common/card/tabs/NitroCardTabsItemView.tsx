@@ -14,7 +14,7 @@ export const NitroCardTabsItemView: FC<NitroCardTabsItemViewProps> = props =>
 
     const getClassNames = useMemo(() =>
     {
-        const newClassNames: string[] = [ 'nav-item', 'rounded-top', 'border' ];
+        const newClassNames: string[] = [ 'nav-item', 'rounded-top', 'gnui-card-tabs-border' ];
 
         if(isActive) newClassNames.push('active');
 
