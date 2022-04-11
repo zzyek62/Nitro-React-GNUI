@@ -1,6 +1,6 @@
 {
     "socket.url": "ws://ws.localhost:2096",
-    "asset.url": "C:/Users/huawei/Desktop/Workspace/nitro-assets",
+    "asset.url": "http://localhost/nitro-assets",
     "image.library.url": "${asset.url}/c_images/",
     "hof.furni.url": "${asset.url}/furniture/nitro",
     "images.url": "${asset.url}/images",
