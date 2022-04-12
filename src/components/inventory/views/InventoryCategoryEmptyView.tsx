@@ -17,8 +17,8 @@ export const InventoryCategoryEmptyView: FC<InventoryCategoryEmptyViewProps> = p
                 <div className="empty-image" />
             </Column>
             <Column justifyContent="center" size={ 7 } overflow="hidden">
-                <Text fontWeight="bold" fontSize={ 5 } overflow="unset" truncate>{ title }</Text>
-                <Text overflow="auto">{ desc }</Text>
+                <Text className="gnui-inv-empt-title" fontWeight="bold" fontSize={ 5 } overflow="unset" truncate>{ title }</Text>
+                <Text className="gnui-inv-empt-desc" overflow="auto">{ desc }</Text>
             </Column>
             { children }
         </Grid>

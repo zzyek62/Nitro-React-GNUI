@@ -128,10 +128,10 @@ export const InventoryFurnitureView: FC<InventoryFurnitureViewProps> = props =>
                 </Column>
                 { selectedItem &&
                     <Column grow justifyContent="between" gap={ 2 }>
-                        <Text grow truncate>{ selectedItem.name }</Text>
+                        <Text grow className="gnui-slctd-itm-txt" truncate>{ selectedItem.name }</Text>
                         <Column gap={ 1 }>
                             { !!roomSession &&
-                                <Button variant="success" onClick={ event => attemptItemPlacement(selectedItem) }>
+                                <Button variant="warning" className="gnui-inv-plc-itm-btn" onClick={ event => attemptItemPlacement(selectedItem) }>
                                     { LocalizeText('inventory.furni.placetoroom') }
                                 </Button> }
                             { (selectedItem && selectedItem.isSellable) &&
