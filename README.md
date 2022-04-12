@@ -1,5 +1,13 @@
 # Nitro React
 
+Nitro React is the second version of Nitro and it is the first stable Habbo client written in Javascript using React. The Project is maintained by Bill and the Nitro Development Team. If you want to know more about Nitro and how development is going you can check out their [discord server](https://discord.gg/CfAjferVV2).
+
+## Nitro React GNUI
+
+GNUI simply stands for "Good Night UI". It's a UI-edit and based on Nitro React. The main purpose of the project as usual is to get some knowledge/experience how things are working. The second thing is, I personally really prefer to use dark mode when I can. This project will basically just include minor CSS edits. So why not have a dark mode alternative.
+
+The whole Nitro project is open sourced, check it out [here](https://git.krews.org/nitro)!
+
 ## Prerequisites
 
 -   You must have [git](https://git-scm.com/) installed
@@ -11,7 +19,7 @@
 
 -   First you should open terminal and navigate to the folder where you want to clone Nitro
 -   Clone Nitro
-    -   `git clone https://git.krews.org/nitro/nitro-react.git`
+    -   `git clone https://github.com/zzyek62/nitro-react-gnui.git`
 -   Install the dependencies
     -   `yarn install`
     -   This may take some time, please be patient
