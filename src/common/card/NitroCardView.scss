@@ -93,28 +93,18 @@ $nitro-card-tabs-height: 33px;
     }
 
     &.theme-primary-slim {
-        border: $border-width solid $border-color;
+        border: 1px solid rgba(255, 255, 255, 0.15);
 
         .nitro-card-header {
             position: relative;
-            min-height: 28px;
-            max-height: 28px;
-            background: repeating-linear-gradient($tertiary, $tertiary 50%, $quaternary 50%, $quaternary 100%);
-            border-bottom: 2px solid darken($quaternary, 5);
-            box-shadow: 0 2px white;
+            min-height: 33px;
+            max-height: 33px;
+            background: rgba(28, 28, 32, 0.95);
+            box-shadow: inset 0px -4px 0px 0px rgba(0,0,0,.12), inset 0px 4px 0px 0px rgba(255,255,255,.05);
             width: 100%;
             margin: 0;
             padding-top:2px;
             
-            &:before {
-                position: absolute;
-                content: " ";
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 2px;
-                background-color: rgba($white, 0.3);
-            }
 
             .nitro-card-header-text {
                 color: $white;
@@ -153,7 +143,7 @@ $nitro-card-tabs-height: 33px;
         }
 
         .content-area {
-            background-color: $light;
+            background-color: rgba(28, 28, 32, 0.95);
         }
     }
 }
@@ -206,4 +196,11 @@ $nitro-card-tabs-height: 33px;
 .gnui-card-tabs-border {
     border-bottom: 1px solid #1a1a1a !important;
 
+}
+
+.gnui-mod-btn {
+    color: #fff !important;
+    background-color: #ffc107 !important;
+    border-color: #ffc107 !important;
+    box-shadow: inset 0 2px 0 rgba(255, 255, 255,.15), inset 0 -2px rgba(0, 0, 0,.10), 0 1px rgba(0, 0, 0,.10);
 }
