@@ -66,7 +66,7 @@ export const NavigatorSearchView: FC<NavigatorSearchViewProps> = props =>
     return (
         <Flex fullWidth gap={ 1 }>
             <Flex shrink>
-                <select className="form-select form-select-sm" value={ searchFilterIndex } onChange={ event => setSearchFilterIndex(parseInt(event.target.value)) }>
+                <select className="form-select gnui-form-control form-select-sm" value={ searchFilterIndex } onChange={ event => setSearchFilterIndex(parseInt(event.target.value)) }>
                     { SearchFilterOptions.map((filter, index) =>
                     {
                         return <option key={ index } value={ index }>{ LocalizeText('navigator.filter.' + filter.name) }</option>
@@ -74,8 +74,8 @@ export const NavigatorSearchView: FC<NavigatorSearchViewProps> = props =>
                 </select>
             </Flex>
             <Flex fullWidth gap={ 1 }>
-                <input type="text" className="form-control form-control-sm" placeholder={ LocalizeText('navigator.filter.input.placeholder') } value={ searchValue } onChange={ event => setSearchValue(event.target.value) } onKeyDown={ event => handleKeyDown(event) } />
-                <Button variant="primary" onClick={ processSearch }>
+                <input type="text" className="form-control gnui-form-control form-control-sm" placeholder={ LocalizeText('navigator.filter.input.placeholder') } value={ searchValue } onChange={ event => setSearchValue(event.target.value) } onKeyDown={ event => handleKeyDown(event) } />
+                <Button variant="warning" className="gnui-nav-srch-btn" onClick={ processSearch }>
                     <FontAwesomeIcon icon="search" />
                 </Button>
             </Flex>
