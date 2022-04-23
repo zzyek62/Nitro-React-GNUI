@@ -80,7 +80,7 @@
 .gnui-form-control:focus {
     background: #1c1c1c;
     border: 1px solid #1a1a1a !important;
-    color: #fff !important;
+    color: #818181 !important;
     box-shadow: inset 0px -3px 0px 0px rgba(0,0,0,.12), inset 0px 3px 0px 0px rgba(255,255,255,.02);
 }
 
@@ -95,4 +95,24 @@
 .gnui-bg-nav-itm-big {
     background-color: #3a3a3a !important;
     border-color: rgba(255, 255, 255, .08) !important;
+}
+
+.gnui-nav-itm-big-txt {
+    color: #bdbdbd !important;
+}
+
+.gnui-room-info-ttl {
+    color: #fff !important;
+}
+
+.gnui-room-info-btn {
+    color: #fff !important;
+}
+
+.gnui-room-info-txt {
+    color: #a9a9a9 !important;
+}
+
+.border {
+    border-color: rgba(255,255,255,.05) !important;
 }
