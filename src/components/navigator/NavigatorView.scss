@@ -65,7 +65,7 @@
 }
 
 .gnui-bg-nav-srch-vw {
-    background-color: #282828;
+    background-color: rgba(82, 82, 82, .21);
     border-color: #383838 !important;
 }
 
@@ -85,5 +85,14 @@
 }
 
 .gnui-nav-txt-light {
+    color: #a3a3a3 !important;
+}
+
+.gnui-nav-cat-ttl {
     color: #fff !important;
+}
+
+.gnui-bg-nav-itm-big {
+    background-color: #3a3a3a !important;
+    border-color: rgba(255, 255, 255, .08) !important;
 }
