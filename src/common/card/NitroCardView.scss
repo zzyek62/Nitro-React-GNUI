@@ -50,19 +50,22 @@ $nitro-card-tabs-height: 33px;
 
         .nitro-card-tabs {
             background-color: rgba(40,40,46,.8);
+            box-shadow: 0px 3px 5px white;
 
             .nav-item {
                 padding: $nav-link-padding-y $nav-link-padding-x;
-                background-color: #1c1c1c;
-                border-color: #1a1a1a !important;
+                background-color: #222222;
+                border-color: #202020 !important;
                 border: 1px solid;
+                border-bottom-color: #202020;
                 color: #9b9b9b;
                 z-index: 1;
                 margin-bottom: -1px;
 
                 &.active {
-                    background-color: #ffc107;
-                    border-color: #1a1a1a !important;
+                    background-color: rgba(255, 193, 7, .71);
+                    border-color: #202020 !important;
+                    border-bottom-color: #202020;
                     border: 1px solid;
                     color: #fff;
 
@@ -81,7 +84,7 @@ $nitro-card-tabs-height: 33px;
                     left: 0;
                     right: 0;
                     margin: auto;
-                    background: rgba(255, 255, 255, .07);
+                    background: rgba(255, 255, 255, .05);
                     z-index: 1;
                 }
             }
@@ -100,7 +103,7 @@ $nitro-card-tabs-height: 33px;
             min-height: 33px;
             max-height: 33px;
             background: rgba(28, 28, 32, 0.95);
-            box-shadow: inset 0px -4px 0px 0px rgba(0,0,0,.12), inset 0px 4px 0px 0px rgba(255,255,255,.02), 0 1px 5px 0px rgba(165, 165, 165,.12);
+            box-shadow: inset 0px -4px 0px 0px rgba(0,0,0,.12), inset 0px 4px 0px 0px rgba(255,255,255,.02), 0 1px 5px 0px rgba(165, 165, 165,.07);
             width: 100%;
             margin: 0;
             padding-top:2px;
@@ -174,9 +177,9 @@ $nitro-card-tabs-height: 33px;
 
 .nitro-card-tabs {
     height: 100%;
-    min-height: 39px;
-    max-height: 39px;
-    border-bottom: 1px solid #1a1a1a;
+    min-height: 43px;
+    max-height: 43px;
+    border-bottom: 1px solid #202020 !important;
 }
 
 .nitro-card-accordion-set {
@@ -194,7 +197,7 @@ $nitro-card-tabs-height: 33px;
 }
 
 .gnui-card-tabs-border {
-    border-bottom: 1px solid #1a1a1a !important;
+    border-bottom: 1px solid #202020 !important;
 
 }
 
