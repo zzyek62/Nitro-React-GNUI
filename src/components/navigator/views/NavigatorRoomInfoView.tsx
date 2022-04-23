@@ -95,7 +95,7 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
     return (
         <NitroCardView className="nitro-room-info" theme="primary-slim">
             <NitroCardHeaderView headerText={ LocalizeText('navigator.roomsettings.roominfo') } onCloseClick={ () => processAction('close') } />
-            <NitroCardContentView className="text-black">
+            <NitroCardContentView className="text-white">
                 { navigatorData.enteredGuestRoom &&
                     <>
                         <Flex gap={ 2 } overflow="hidden">
@@ -107,19 +107,19 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
                                     <Column grow gap={ 1 }>
                                         <Flex gap={ 1 }>
                                             <i onClick={ () => processAction('set_home_room') } className={ 'flex-shrink-0 icon icon-house-small cursor-pointer' + classNames({ ' gray': navigatorData.homeRoomId !== navigatorData.enteredGuestRoom.roomId }) } />
-                                            <Text bold>{ navigatorData.enteredGuestRoom.roomName }</Text>
+                                            <Text className="gnui-room-info-ttl">{ navigatorData.enteredGuestRoom.roomName }</Text>
                                         </Flex>
                                         { navigatorData.enteredGuestRoom.showOwner &&
                                             <Flex alignItems="center" gap={ 1 }>
                                                 <Text variant="muted">{ LocalizeText('navigator.roomownercaption') }</Text>
                                                 <Flex alignItems="center" gap={ 1 }>
                                                     <UserProfileIconView userId={ navigatorData.enteredGuestRoom.ownerId } />
-                                                    <Text>{ navigatorData.enteredGuestRoom.ownerName }</Text>
+                                                    <Text className="gnui-room-info-txt">{ navigatorData.enteredGuestRoom.ownerName }</Text>
                                                 </Flex>
                                             </Flex> }
                                         <Flex alignItems="center" gap={ 1 }>
                                             <Text variant="muted">{ LocalizeText('navigator.roomrating') }</Text>
-                                            <Text>{ navigatorData.currentRoomRating }</Text>
+                                            <Text className="gnui-room-info-txt">{ navigatorData.currentRoomRating }</Text>
                                         </Flex>
                                         { (navigatorData.enteredGuestRoom.tags.length > 0) &&
                                             <Flex alignItems="center" gap={ 1 }>
@@ -155,10 +155,10 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
                             </Button>
                             { hasPermission('settings') &&
                             <>
-                                <Button onClick={ () => processAction('toggle_mute') }>
+                                <Button variant="warning" className="gnui-room-info-btn" onClick={ () => processAction('toggle_mute') }>
                                     { LocalizeText(isRoomMuted ? 'navigator.muteall_on' : 'navigator.muteall_off') }
                                 </Button>
-                                <Button onClick={ () => processAction('open_floorplan_editor') }>
+                                <Button variant="warning" className="gnui-room-info-btn" onClick={ () => processAction('open_floorplan_editor') }>
                                     { LocalizeText('open.floor.plan.editor') }
                                 </Button>
                             </> }
