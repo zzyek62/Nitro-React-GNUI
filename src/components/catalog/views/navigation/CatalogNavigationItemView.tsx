@@ -20,7 +20,7 @@ export const CatalogNavigationItemView: FC<CatalogNavigationItemViewProps> = pro
         <>
             <LayoutGridItem gap={ 1 } column={ false } itemActive={ node.isActive } onClick={ event => activateNode(node) }>
                 <CatalogIconView icon={ node.iconId } />
-                <Text grow truncate>{ node.localization }</Text>
+                <Text className="gnui-catalog-itm-bg" grow truncate>{ node.localization }</Text>
                 { node.isBranch &&
                     <FontAwesomeIcon icon={ node.isOpen ? 'caret-up' : 'caret-down' } /> }
             </LayoutGridItem>

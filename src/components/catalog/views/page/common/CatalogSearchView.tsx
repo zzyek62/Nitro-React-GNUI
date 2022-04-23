@@ -98,14 +98,14 @@ export const CatalogSearchView: FC<{}> = props =>
     return (
         <Flex gap={ 1 }>
             <Flex fullWidth alignItems="center" position="relative">
-                <input type="text" className="form-control form-control-sm" placeholder={ LocalizeText('generic.search') } value={ searchValue } onChange={ event => updateSearchValue(event.target.value) } onKeyDown={ event => ((event.code === 'Enter') || (event.code === 'NumpadEnter')) && processSearch(searchValue) } />
+                <input type="text" className="form-control gnui-form-control form-control-sm" placeholder={ LocalizeText('generic.search') } value={ searchValue } onChange={ event => updateSearchValue(event.target.value) } onKeyDown={ event => ((event.code === 'Enter') || (event.code === 'NumpadEnter')) && processSearch(searchValue) } />
             </Flex>
             { (!searchValue || !searchValue.length) &&
-                <Button variant="primary" className="catalog-search-button">
+                <Button variant="warning" className="catalog-search-button gnui-srch-btn">
                     <FontAwesomeIcon icon="search" />
                 </Button> }
             { searchValue && !!searchValue.length &&
-                <Button variant="primary" className="catalog-search-button" onClick={ event => updateSearchValue('') }>
+                <Button variant="warning" className="catalog-search-button gnui-srch-btn" onClick={ event => updateSearchValue('') }>
                     <FontAwesomeIcon icon="times" />
                 </Button> }
         </Flex>
