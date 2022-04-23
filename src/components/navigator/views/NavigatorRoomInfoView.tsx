@@ -147,7 +147,7 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
                         </Flex>
                         <Column gap={ 1 }>
                             { hasPermission('staff_pick') &&
-                            <Button onClick={ () => processAction('toggle_pick') }>
+                            <Button variant="warning" className="gnui-room-info-btn" onClick={ () => processAction('toggle_pick') }>
                                 { LocalizeText(isRoomPicked ? 'navigator.staffpicks.unpick' : 'navigator.staffpicks.pick') }
                             </Button> }
                             <Button variant="danger" disabled>

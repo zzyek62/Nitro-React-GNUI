@@ -52,10 +52,10 @@ export const NavigatorSearchResultView: FC<NavigatorSearchResultViewProps> = pro
         <Column className="gnui-bg-nav-srch-vw rounded border border-muted" gap={ 0 }>
             <Flex fullWidth alignItems="center" justifyContent="between" className="px-2 py-1">
                 <Flex grow pointer alignItems="center" gap={ 1 } onClick={ event => setIsExtended(prevValue => !prevValue) }>
-                    <FontAwesomeIcon icon={ isExtended ? 'minus' : 'plus' } className="text-warning" />
+                    <FontAwesomeIcon icon={ isExtended ? 'minus' : 'plus' } className="text-muted" />
                     <Text className="gnui-nav-cat-ttl">{ LocalizeText(getResultTitle()) }</Text>
                 </Flex>
-                <FontAwesomeIcon icon={ ((displayMode === NavigatorSearchResultViewDisplayMode.LIST) ? 'th' : (displayMode >= NavigatorSearchResultViewDisplayMode.THUMBNAILS) ? 'bars' : null) } className="text-warning" onClick={ toggleDisplayMode } />
+                <FontAwesomeIcon icon={ ((displayMode === NavigatorSearchResultViewDisplayMode.LIST) ? 'th' : (displayMode >= NavigatorSearchResultViewDisplayMode.THUMBNAILS) ? 'bars' : null) } className="text-muted" onClick={ toggleDisplayMode } />
             </Flex> { isExtended && 
                 <>
                     {

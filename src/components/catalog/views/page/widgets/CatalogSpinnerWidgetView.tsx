@@ -35,11 +35,11 @@ export const CatalogSpinnerWidgetView: FC<{}> = props =>
 
     return (
         <>
-            <Text>{ LocalizeText('catalog.bundlewidget.spinner.select.amount') }</Text>
+            <Text className="gnui-cat-txt">{ LocalizeText('catalog.bundlewidget.spinner.select.amount') }</Text>
             <Flex alignItems="center" gap={ 1 }>
-                <FontAwesomeIcon icon="caret-left" className="text-black cursor-pointer" onClick={ event => updateQuantity(quantity - 1) } />
-                <input type="number" className="form-control form-control-sm quantity-input" value={ quantity } onChange={ event => updateQuantity(event.target.valueAsNumber) } />
-                <FontAwesomeIcon icon="caret-right" className="text-black cursor-pointer" onClick={ event => updateQuantity(quantity + 1) } />
+                <FontAwesomeIcon icon="caret-left" className="text-muted cursor-pointer" onClick={ event => updateQuantity(quantity - 1) } />
+                <input type="number" className="form-control gnui-form-control form-control-sm quantity-input" value={ quantity } onChange={ event => updateQuantity(event.target.valueAsNumber) } />
+                <FontAwesomeIcon icon="caret-right" className="text-muted cursor-pointer" onClick={ event => updateQuantity(quantity + 1) } />
             </Flex>
         </>
     );

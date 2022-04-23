@@ -121,3 +121,18 @@
 .gnui-srch-btn {
     color: #fff !important;
 }
+
+.gnui-cat-grid-itm {
+    border-color: rgba(255, 255, 255, 0.05) !important;
+    background-color: rgba(82, 82, 82, 0.21);
+    border: 1px solid !important;
+}
+
+.gnui-cat-grid-itm.active {
+    border-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+.gnui-cat-txt,
+.gnui-cat-btn {
+    color: #fff !important;
+}
