@@ -213,3 +213,14 @@ $nitro-card-tabs-height: 33px;
 .gnui-txt-white {
     color: #fff !important;
 }
+
+
+.gnui-item-prev {
+    border-color: rgba(255, 255, 255, 0.05) !important;
+    background-color: rgba(82, 82, 82, 0.21);
+    border: 1px solid !important;
+}
+
+.gnui-item-prev.active {
+    border-color: rgba(255, 255, 255, 0.05) !important;
+}

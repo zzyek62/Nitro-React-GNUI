@@ -47,7 +47,7 @@ export const InventoryBadgeView: FC<{}> = props =>
             </Column>
             <Column className="justify-content-between" size={ 5 } overflow="auto">
                 <Column overflow="hidden" gap={ 2 }>
-                    <Text>{ LocalizeText('inventory.badges.activebadges') }</Text>
+                    <Text className="gnui-txt-white">{ LocalizeText('inventory.badges.activebadges') }</Text>
                     <AutoGrid columnCount={ 3 }>
                         { activeBadgeCodes && (activeBadgeCodes.length > 0) && activeBadgeCodes.map((badgeCode, index) => <InventoryBadgeItemView key={ index } badgeCode={ badgeCode } />) }
                     </AutoGrid>
@@ -56,9 +56,9 @@ export const InventoryBadgeView: FC<{}> = props =>
                     <Column grow justifyContent="end" gap={ 2 }>
                         <Flex alignItems="center" gap={ 2 }>
                             <LayoutBadgeImageView shrink badgeCode={ selectedBadgeCode } />
-                            <Text>{ LocalizeBadgeName(selectedBadgeCode) }</Text>
+                            <Text className="gnui-txt-white">{ LocalizeBadgeName(selectedBadgeCode) }</Text>
                         </Flex>
-                        <Button variant={ (isWearingBadge(selectedBadgeCode) ? 'danger' : 'success') } disabled={ !isWearingBadge(selectedBadgeCode) && !canWearBadges() } onClick={ event => toggleBadge(selectedBadgeCode) }>{ LocalizeText(isWearingBadge(selectedBadgeCode) ? 'inventory.badges.clearbadge' : 'inventory.badges.wearbadge') }</Button>
+                        <Button className="gnui-txt-white" variant={ (isWearingBadge(selectedBadgeCode) ? 'danger' : 'warning') } disabled={ !isWearingBadge(selectedBadgeCode) && !canWearBadges() } onClick={ event => toggleBadge(selectedBadgeCode) }>{ LocalizeText(isWearingBadge(selectedBadgeCode) ? 'inventory.badges.clearbadge' : 'inventory.badges.wearbadge') }</Button>
                     </Column> }
             </Column>
         </Grid>
