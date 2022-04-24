@@ -11,7 +11,7 @@ $nitro-card-tabs-height: 33px;
 
     &.theme-primary {
         border: 1px solid rgba(255, 255, 255, .15);
-        border-radius: 12px !important;
+        border-radius: 10px !important;
 
         .nitro-card-header {
             min-height: 39px;
@@ -208,4 +208,8 @@ $nitro-card-tabs-height: 33px;
     background-color: #ffc107 !important;
     border-color: #ffc107 !important;
     box-shadow: inset 0 2px 0 rgba(255, 255, 255,.15), inset 0 -2px rgba(0, 0, 0,.10), 0 1px rgba(0, 0, 0,.10);
+}
+
+.gnui-txt-white {
+    color: #fff !important;
 }

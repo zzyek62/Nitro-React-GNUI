@@ -67,16 +67,16 @@ export const NavigatorRoomCreatorView: FC<{}> = props =>
             <Grid overflow="hidden">
                 <Column size={ 6 } gap={ 1 } overflow="auto">
                     <Column gap={ 1 }>
-                        <Text>{ LocalizeText('navigator.createroom.roomnameinfo') }</Text>
-                        <input type="text" className="form-control form-control-sm" maxLength={ 60 } onChange={ event => setName(event.target.value) } placeholder={ LocalizeText('navigator.createroom.roomnameinfo') } />
+                        <Text className="gnui-txt-white">{ LocalizeText('navigator.createroom.roomnameinfo') }</Text>
+                        <input type="text" className="form-control gnui-form-control form-control-sm" maxLength={ 60 } onChange={ event => setName(event.target.value) } placeholder={ LocalizeText('navigator.createroom.roomnameinfo') } />
                     </Column>
                     <Column grow gap={ 1 }>
-                        <Text>{ LocalizeText('navigator.createroom.roomdescinfo') }</Text>
-                        <textarea className="flex-grow-1 form-control form-control-sm w-100" maxLength={ 255 } onChange={ event => setDescription(event.target.value) } placeholder={ LocalizeText('navigator.createroom.roomdescinfo') } />
+                        <Text className="gnui-txt-white">{ LocalizeText('navigator.createroom.roomdescinfo') }</Text>
+                        <textarea className="flex-grow-1 form-control gnui-form-control form-control-sm w-100" maxLength={ 255 } onChange={ event => setDescription(event.target.value) } placeholder={ LocalizeText('navigator.createroom.roomdescinfo') } />
                     </Column>
                     <Column gap={ 1 }>
-                        <Text>{ LocalizeText('navigator.category') }</Text>
-                        <select className="form-select form-select-sm" onChange={ event => setCategory(Number(event.target.value)) }>
+                        <Text className="gnui-txt-white">{ LocalizeText('navigator.category') }</Text>
+                        <select className="form-select gnui-form-control form-select-sm" onChange={ event => setCategory(Number(event.target.value)) }>
                             { categories && (categories.length > 0) && categories.map(category =>
                             {
                                 return <option key={ category.id } value={ category.id }>{ LocalizeText(category.name) }</option>
@@ -84,8 +84,8 @@ export const NavigatorRoomCreatorView: FC<{}> = props =>
                         </select>
                     </Column>
                     <Column gap={ 1 }>
-                        <Text>{ LocalizeText('navigator.maxvisitors') }</Text>
-                        <select className="form-select form-select-sm" onChange={ event => setVisitorsCount(Number(event.target.value)) }>
+                        <Text className="gnui-txt-white">{ LocalizeText('navigator.maxvisitors') }</Text>
+                        <select className="form-select gnui-form-control form-select-sm" onChange={ event => setVisitorsCount(Number(event.target.value)) }>
                             { maxVisitorsList && maxVisitorsList.map(value =>
                             {
                                 return <option key={ value } value={ value }>{ value }</option>
@@ -93,8 +93,8 @@ export const NavigatorRoomCreatorView: FC<{}> = props =>
                         </select>
                     </Column>
                     <Column gap={ 1 }>
-                        <Text>{ LocalizeText('navigator.tradesettings') }</Text>
-                        <select className="form-select form-select-sm" onChange={ event => setTradesSetting(Number(event.target.value)) }>
+                        <Text className="gnui-txt-white">{ LocalizeText('navigator.tradesettings') }</Text>
+                        <select className="form-select gnui-form-control form-select-sm" onChange={ event => setTradesSetting(Number(event.target.value)) }>
                             <option value="0">{ LocalizeText('navigator.roomsettings.trade_not_allowed') }</option>
                             <option value="1">{ LocalizeText('navigator.roomsettings.trade_not_with_Controller') }</option>
                             <option value="2">{ LocalizeText('navigator.roomsettings.trade_allowed') }</option>
@@ -105,18 +105,18 @@ export const NavigatorRoomCreatorView: FC<{}> = props =>
                     {
                         roomModels.map((model, index )=>
                         {
-                            return (<LayoutGridItem fullHeight key={ model.name } onClick={ () => selectModel(model, index) } itemActive={ (selectedModelName === model.name) } overflow="unset" gap={ 0 } className="p-1" disabled={ (GetClubMemberLevel() < model.clubLevel) }>
+                            return (<LayoutGridItem fullHeight key={ model.name } onClick={ () => selectModel(model, index) } itemActive={ (selectedModelName === model.name) } overflow="unset" gap={ 0 } className="gnui-room-prev p-1" disabled={ (GetClubMemberLevel() < model.clubLevel) }>
                                 <Flex fullHeight center overflow="hidden">
                                     <img alt="" src={ getRoomModelImage(model.name) } />
                                 </Flex>
-                                <Text bold>{ model.tileSize } { LocalizeText('navigator.createroom.tilesize') }</Text>
+                                <Text className="gnui-txt-white">{ model.tileSize } { LocalizeText('navigator.createroom.tilesize') }</Text>
                                 { !hcDisabled && model.clubLevel > HabboClubLevelEnum.NO_CLUB && <LayoutCurrencyIcon position="absolute" className="top-1 end-1" type="hc" /> }
                             </LayoutGridItem>);
                         })
                     }
                 </Column>
             </Grid>
-            <Button fullWidth variant={ (!name || (name.length < 3)) ? 'danger' : 'success' } onClick={ createRoom } disabled={ (!name || (name.length < 3)) }>{ LocalizeText('navigator.createroom.create') }</Button>
+            <Button className="gnui-txt-white" fullWidth variant={ (!name || (name.length < 3)) ? 'danger' : 'warning' } onClick={ createRoom } disabled={ (!name || (name.length < 3)) }>{ LocalizeText('navigator.createroom.create') }</Button>
         </Column>
     );
 }
