@@ -222,6 +222,11 @@ $nitro-card-tabs-height: 33px;
     text-align: left !important;
 }
 
+.gnui-item-container {
+    background-color: rgba(82, 82, 82, .21);
+    border-color: #383838 !important;
+}
+
 .gnui-item-prev {
     border-color: rgba(255, 255, 255, 0.05) !important;
     background-color: rgba(82, 82, 82, 0.21);
@@ -230,4 +235,13 @@ $nitro-card-tabs-height: 33px;
 
 .gnui-item-prev.active {
     border-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+.gnui-item-prev:hover {
+    background-color: rgba(82, 82, 82, 0.31);
+}
+
+.gnui-border-trans {
+    border-color: rgba(255, 255, 255, .05);
+    background-color: rgba(255, 255, 255, .05);
 }

@@ -158,8 +158,8 @@ export const GroupMembersView: FC<{}> = props =>
                         <LayoutBadgeImageView badgeCode={ membersData.badge } isGroup={ true } className="mx-auto d-block"/>
                     </Flex>
                     <Column fullWidth gap={ 1 }>
-                        <input type="text" className="form-control form-control-sm w-100" placeholder={ LocalizeText('group.members.searchinfo') } value={ searchQuery } onChange={ event => setSearchQuery(event.target.value) } />
-                        <select className="form-select form-select-sm w-100" value={ levelId } onChange={ event => setLevelId(parseInt(event.target.value)) }>
+                        <input type="text" className="form-control gnui-form-control form-control-sm w-100" placeholder={ LocalizeText('group.members.searchinfo') } value={ searchQuery } onChange={ event => setSearchQuery(event.target.value) } />
+                        <select className="form-select gnui-form-control form-select-sm w-100" value={ levelId } onChange={ event => setLevelId(parseInt(event.target.value)) }>
                             <option value="0">{ LocalizeText('group.members.search.all') }</option>
                             <option value="1">{ LocalizeText('group.members.search.admins') }</option>
                             <option value="2">{ LocalizeText('group.members.search.pending') }</option>
@@ -170,12 +170,12 @@ export const GroupMembersView: FC<{}> = props =>
                     { membersData.result.map((member, index) =>
                     {
                         return (
-                            <Flex key={ index } gap={ 2 } alignItems="center" overflow="hidden" className="member-list-item bg-white rounded p-2">
+                            <Flex key={ index } gap={ 2 } alignItems="center" overflow="hidden" className="member-list-item gnui-item-container border rounded p-2">
                                 <div className="avatar-head cursor-pointer" onClick={ () => GetUserProfile(member.id) }>
                                     <LayoutAvatarImageView figure={ member.figure } headOnly={ true } direction={ 2 } />
                                 </div>
                                 <Column grow gap={ 1 }>
-                                    <Text bold small pointer onClick={ event => GetUserProfile(member.id) }>{ member.name }</Text>
+                                    <Text className="gnui-txt-swhite" bold small pointer onClick={ event => GetUserProfile(member.id) }>{ member.name }</Text>
                                     { (member.rank !== GroupRank.REQUESTED) &&
                                     <Text small italics variant="muted">{ LocalizeText('group.members.since', [ 'date' ], [ member.joinedAt ]) }</Text> }
                                 </Column>
@@ -198,13 +198,13 @@ export const GroupMembersView: FC<{}> = props =>
                     }) }
                 </Grid>
                 <Flex gap={ 1 } justifyContent="between" alignItems="center">
-                    <Button disabled={ (membersData.pageIndex === 0) } onClick={ event => setPageId(prevValue => (prevValue - 1)) }>
+                    <Button variant="warning" className="gnui-txt-white" disabled={ (membersData.pageIndex === 0) } onClick={ event => setPageId(prevValue => (prevValue - 1)) }>
                         <FontAwesomeIcon icon="chevron-left" />
                     </Button>
-                    <Text small>
+                    <Text className="gnui-txt-white" small>
                         { LocalizeText('group.members.pageinfo', [ 'amount', 'page', 'totalPages' ], [ membersData.totalMembersCount.toString(), (membersData.pageIndex + 1).toString(), totalPages.toString() ]) }
                     </Text>
-                    <Button disabled={ (membersData.pageIndex === (totalPages - 1)) } onClick={ event => setPageId(prevValue => (prevValue + 1)) }>
+                    <Button variant="warning" className="gnui-txt-white" disabled={ (membersData.pageIndex === (totalPages - 1)) } onClick={ event => setPageId(prevValue => (prevValue + 1)) }>
                         <FontAwesomeIcon icon="chevron-right" />
                     </Button>
                 </Flex>

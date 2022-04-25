@@ -82,12 +82,12 @@ export const GroupTabIdentityView: FC<GroupTabIdentityViewProps> = props =>
         <Column justifyContent="between" overflow="auto">
             <Column gap={ 1 }>
                 <Flex alignItems="center" gap={ 1 }>
-                    <Text center className="col-3">{ LocalizeText('group.edit.name') }</Text>
-                    <input type="text" className="form-control form-control-sm" value={ groupName } maxLength={ 29 } onChange={ event => setGroupName(event.target.value) } />
+                    <Text center className="col-3 gnui-txt-white">{ LocalizeText('group.edit.name') }</Text>
+                    <input type="text" className="form-control gnui-form-control form-control-sm" value={ groupName } maxLength={ 29 } onChange={ event => setGroupName(event.target.value) } />
                 </Flex>
                 <Flex alignItems="center" gap={ 1 }>
-                    <Text center className="col-3">{ LocalizeText('group.edit.desc') }</Text>
-                    <textarea className="form-control form-control-sm" value={ groupDescription } maxLength={ 254 } onChange={ event => setGroupDescription(event.target.value) } />
+                    <Text center className="col-3 gnui-txt-white">{ LocalizeText('group.edit.desc') }</Text>
+                    <textarea className="form-control gnui-form-control form-control-sm" value={ groupDescription } maxLength={ 254 } onChange={ event => setGroupDescription(event.target.value) } />
                 </Flex>
                 { isCreator &&
                     <>

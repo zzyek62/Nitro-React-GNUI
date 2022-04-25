@@ -138,8 +138,8 @@ export const GroupCreatorView: FC<GroupCreatorViewProps> = props =>
                     <Flex alignItems="center" gap={ 2 }>
                         <Base className={ `nitro-group-tab-image tab-${ currentTab }` } />
                         <Column grow gap={ 0 }>
-                            <Text bold fontSize={ 4 }>{ LocalizeText(`group.create.stepcaption.${ currentTab }`) }</Text>
-                            <Text>{ LocalizeText(`group.create.stepdesc.${ currentTab }`) }</Text>
+                            <Text className="gnui-txt-white" fontSize={ 4 }>{ LocalizeText(`group.create.stepcaption.${ currentTab }`) }</Text>
+                            <Text className="gnui-txt-white">{ LocalizeText(`group.create.stepdesc.${ currentTab }`) }</Text>
                         </Column>
                     </Flex>
                     <Column overflow="hidden">
@@ -153,7 +153,7 @@ export const GroupCreatorView: FC<GroupCreatorViewProps> = props =>
                             <GroupTabCreatorConfirmationView groupData={ groupData } setGroupData={ setGroupData } purchaseCost={ purchaseCost } /> }
                     </Column>
                     <Flex justifyContent="between">
-                        <Button variant="link" className="text-black" onClick={ previousStep }>
+                        <Button variant="link" className="text-white" onClick={ previousStep }>
                             { LocalizeText(currentTab === 1 ? 'generic.cancel' : 'group.create.previousstep') }
                         </Button>
                         <Button disabled={ ((currentTab === 4) && !HasHabboClub()) } variant={ ((currentTab === 4) ? HasHabboClub() ? 'success' : 'danger' : 'primary') } onClick={ nextStep }>
