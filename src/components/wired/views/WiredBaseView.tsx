@@ -103,9 +103,9 @@ export const WiredBaseView: FC<WiredBaseViewProps> = props =>
                 <Column gap={ 1 }>
                     <Flex alignItems="center" gap={ 1 }>
                         <i className={ `icon icon-wired-${ wiredType }` } />
-                        <Text bold>{ wiredName }</Text>
+                        <Text className="gnui-txt-white" bold>{ wiredName }</Text>
                     </Flex>
-                    <Text small>{ wiredDescription }</Text>
+                    <Text className="gnui-txt-swhite" small>{ wiredDescription }</Text>
                 </Column>
                 { !!children && <hr className="m-0 bg-dark" /> }
                 { children }
@@ -115,8 +115,8 @@ export const WiredBaseView: FC<WiredBaseViewProps> = props =>
                         <WiredFurniSelectorView />
                     </> }
                 <Flex alignItems="center" gap={ 1 }>
-                    <Button fullWidth variant="success" onClick={ onSave }>{ LocalizeText('wiredfurni.ready') }</Button>
-                    <Button fullWidth variant="secondary" onClick={ close }>{ LocalizeText('cancel') }</Button>
+                    <Button fullWidth variant="warning" className="gnui-txt-white" onClick={ onSave }>{ LocalizeText('wiredfurni.ready') }</Button>
+                    <Button fullWidth variant="danger" onClick={ close }>{ LocalizeText('cancel') }</Button>
                 </Flex>
             </NitroCardContentView>
         </NitroCardView>

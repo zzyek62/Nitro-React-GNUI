@@ -30,21 +30,21 @@ export const WiredActionBotTalkToAvatarView: FC<{}> = props =>
     return (
         <WiredActionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } hasSpecialInput={ true } save={ save }>
             <Column gap={ 1 }>
-                <Text bold>{ LocalizeText('wiredfurni.params.bot.name') }</Text>
-                <input type="text" className="form-control form-control-sm" maxLength={ 32 } value={ botName } onChange={ event => setBotName(event.target.value) } />
+                <Text className="gnui-txt-white" bold>{ LocalizeText('wiredfurni.params.bot.name') }</Text>
+                <input type="text" className="form-control gnui-form-controlform-control-sm" maxLength={ 32 } value={ botName } onChange={ event => setBotName(event.target.value) } />
             </Column>
             <Column gap={ 1 }>
-                <Text bold>{ LocalizeText('wiredfurni.params.message') }</Text>
+                <Text className="gnui-txt-white" bold>{ LocalizeText('wiredfurni.params.message') }</Text>
                 <input type="text" className="form-control form-control-sm" maxLength={ 64 } value={ message } onChange={ event => setMessage(event.target.value) } />
             </Column>
             <Column gap={ 1 }>
                 <Flex alignItems="center" gap={ 1 }>
                     <input className="form-check-input" type="radio" name="talkMode" id="talkMode1" checked={ (talkMode === 0) } onChange={ event => setTalkMode(0) } />
-                    <Text>{ LocalizeText('wiredfurni.params.talk') }</Text>
+                    <Text className="gnui-txt-swhite">{ LocalizeText('wiredfurni.params.talk') }</Text>
                 </Flex>
                 <Flex alignItems="center" gap={ 1 }>
                     <input className="form-check-input" type="radio" name="talkMode" id="talkMode2" checked={ (talkMode === 1) } onChange={ event => setTalkMode(1) } />
-                    <Text>{ LocalizeText('wiredfurni.params.whisper') }</Text>
+                    <Text className="gnui-txt-swhite">{ LocalizeText('wiredfurni.params.whisper') }</Text>
                 </Flex>
             </Column>
         </WiredActionBaseView>
