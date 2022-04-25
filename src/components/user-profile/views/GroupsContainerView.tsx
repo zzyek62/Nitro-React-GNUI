@@ -74,7 +74,7 @@ export const GroupsContainerView: FC<GroupsContainerViewProps> = props =>
                     { groups.map((group, index) =>
                     {
                         return (
-                            <LayoutGridItem key={ index } overflow="unset" itemActive={ (selectedGroupId === group.groupId) } onClick={ () => setSelectedGroupId(group.groupId) } className="p-1">
+                            <LayoutGridItem key={ index } overflow="unset" itemActive={ (selectedGroupId === group.groupId) } onClick={ () => setSelectedGroupId(group.groupId) } className="gnui-item-prev p-1">
                                 { itsMe &&
                                 <i className={ 'position-absolute end-0 top-0 z-index-1 icon icon-group-' + (group.favourite ? 'favorite' : 'not-favorite') } onClick={ () => ToggleFavoriteGroup(group) } /> }
                                 <LayoutBadgeImageView badgeCode={ group.badgeCode } isGroup={ true } />

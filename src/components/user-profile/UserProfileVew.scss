@@ -3,7 +3,7 @@
     height: $user-profile-height;
 
     .user-container {
-        border-right: 1px solid gray;
+        border-right: 1px solid rgba(255, 255, 255, .03);
 
         .avatar-container {
             width: 75px;
@@ -12,8 +12,8 @@
     }
 
     .rooms-button-container {
-        border-top: 1px solid gray;
-        border-bottom: 1px solid gray;
+        border-top: 1px solid rgba(255, 255, 255, .03);
+        border-bottom: 1px solid rgba(255, 255, 255, .03);
     }
 
     .user-relationship {
@@ -33,7 +33,7 @@
     .user-relationship-count {
         margin-top: 2px;
         margin-left: 5px;
-        color: #939392 !important;
+        color: rgb(110, 110, 110) !important;
     }
 
     .user-groups-container {
@@ -64,4 +64,10 @@
             background-position: -205px -3px;
         }
     }    
+}
+
+.gnui-profile-bg-default {
+    border-color: rgba(255, 255, 255, 0.05) !important;
+    background-color: rgba(82, 82, 82, 0.21);
+    border: 1px solid;
 }

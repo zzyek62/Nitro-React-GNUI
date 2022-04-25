@@ -34,18 +34,21 @@ export const UserContainerView: FC<UserContainerViewProps> = props =>
             </Column>
             <Column>
                 <Column gap={ 0 }>
-                    <Text bold>{ userProfile.username }</Text>
+                    <Text className="gnui-txt-white" bold>{ userProfile.username }</Text>
                     <Text italics textBreak small>{ userProfile.motto }&nbsp;</Text>
                 </Column>
                 <Column gap={ 1 }>
-                    <Text small>
-                        <b>{ LocalizeText('extendedprofile.created') }</b> { userProfile.registration }
+                    <Text className="gnui-txt-white" small>
+                        { LocalizeText('extendedprofile.created') }
+                        <Text className="gnui-txt-swhite"> { userProfile.registration }</Text>
                     </Text>
-                    <Text small>
-                        <b>{ LocalizeText('extendedprofile.last.login') }</b> { FriendlyTime.format(userProfile.secondsSinceLastVisit, '.ago', 2) }
+                    <Text className="gnui-txt-white" small>
+                        { LocalizeText('extendedprofile.last.login') } 
+                        <Text className="gnui-txt-swhite"> { FriendlyTime.format(userProfile.secondsSinceLastVisit, '.ago', 2) }</Text>
                     </Text>
-                    <Text small>
-                        <b>{ LocalizeText('extendedprofile.achievementscore') }</b> { userProfile.achievementPoints }
+                    <Text className="gnui-txt-white" small>
+                        { LocalizeText('extendedprofile.achievementscore') }
+                        <Text className="gnui-txt-swhite"> { userProfile.achievementPoints }</Text>
                     </Text>
                 </Column>
                 <Flex gap={ 1 }>
