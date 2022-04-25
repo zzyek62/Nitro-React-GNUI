@@ -24,14 +24,14 @@ export const CatalogLayoutDefaultView: FC<CatalogLayoutProps> = props =>
                 { !currentOffer &&
                     <>
                         { !!page.localization.getImage(1) && <img alt="" src={ page.localization.getImage(1) } /> }
-                        <Text center dangerouslySetInnerHTML={ { __html: page.localization.getText(0) } } />
+                        <Text className="gnui-txt-swhite gnui-txt-left" center dangerouslySetInnerHTML={ { __html: page.localization.getText(0) } } />
                     </> }
                 { currentOffer &&
                     <>
                         <Base position="relative" overflow="hidden">
                             <CatalogViewProductWidgetView />
                             <CatalogLimitedItemWidgetView fullWidth position="absolute" className="top-1" />
-                            <CatalogAddOnBadgeWidgetView position="absolute" className="bg-muted rounded bottom-1 end-1" />
+                            <CatalogAddOnBadgeWidgetView position="absolute" className="gnui-cat-bg-default rounded bottom-1 end-1" />
                         </Base>
                         <Column grow gap={ 1 }>
                             <Text grow truncate>{ currentOffer.localizationName }</Text>

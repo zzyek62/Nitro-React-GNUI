@@ -11,16 +11,16 @@ export const CatalogLayoutPets3View: FC<CatalogLayoutProps> = props =>
     const imageUrl = page.localization.getImage(1);
     
     return (
-        <Column grow className="bg-muted rounded text-black p-2" overflow="hidden">
+        <Column grow className="gnui-cat-bg-default rounded p-2" overflow="hidden">
             <Flex alignItems="center" gap={ 2 }>
                 { imageUrl && <img alt="" src={ imageUrl } /> }
-                <Base className="fs-5" dangerouslySetInnerHTML={ { __html: page.localization.getText(1) } } />
+                <Base className="fs-5 gnui-txt-white" dangerouslySetInnerHTML={ { __html: page.localization.getText(1) } } />
             </Flex>
             <Column grow alignItems="center" overflow="auto">
-                <Base dangerouslySetInnerHTML={ { __html: page.localization.getText(2) } } />
+                <Base className="gnui-txt-swhite" dangerouslySetInnerHTML={ { __html: page.localization.getText(2) } } />
             </Column>
             <Flex alignItems="center">
-                <Base className="fw-bold" dangerouslySetInnerHTML={ { __html: page.localization.getText(3) } } />
+                <Base className=" gnui-txt-white" dangerouslySetInnerHTML={ { __html: page.localization.getText(3) } } />
             </Flex>
         </Column>
     );
