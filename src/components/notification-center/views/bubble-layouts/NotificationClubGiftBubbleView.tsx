@@ -18,7 +18,7 @@ export const NotificationClubGiftBubbleView: FC<NotificationClubGiftBubbleViewPr
                 <span className="ms-1">{ LocalizeText('notifications.text.club_gift') }</span>
             </div>
             <div className="d-flex align-items-center justify-content-end gap-2">
-                <button type="button" className="btn btn-success w-100 btn-sm" onClick={ () => NotificationUtilities.openUrl(item.linkUrl) }>{ LocalizeText('notifications.button.show_gift_list') }</button>
+                <button type="button" className="btn btn-warning gnui-txt-white w-100 btn-sm" onClick={ () => NotificationUtilities.openUrl(item.linkUrl) }>{ LocalizeText('notifications.button.show_gift_list') }</button>
                 <span className="text-decoration-underline cursor-pointer text-nowrap" onClick={ close }>{ LocalizeText('notifications.button.later') }</span>
             </div>
         </LayoutNotificationBubbleView>
