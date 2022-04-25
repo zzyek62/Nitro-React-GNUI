@@ -46,10 +46,10 @@ export const VipGiftItem : FC<VipGiftItemViewProps> = props =>
     }, [ offer ]);
 
     return (
-        <LayoutGridItem center={ false } column={ false } alignItems="center" className="p-1">
+        <LayoutGridItem center={ false } column={ false } alignItems="center" className="gnui-item-container border p-1">
             <LayoutImage imageUrl={ getImageUrlForOffer() } />
-            <Text grow fontWeight="bold">{ getItemTitle() }</Text>
-            <Button variant="secondary" onClick={ () => onSelect(offer.localizationId) } disabled={ !isAvailable }>
+            <Text className="gnui-txt-white" grow fontWeight="bold">{ getItemTitle() }</Text>
+            <Button variant="warning" className="gnui-txt-white" onClick={ () => onSelect(offer.localizationId) } disabled={ !isAvailable }>
                 { LocalizeText('catalog.club_gift.select') }
             </Button>
         </LayoutGridItem>

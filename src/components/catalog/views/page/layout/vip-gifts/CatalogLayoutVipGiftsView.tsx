@@ -42,7 +42,7 @@ export const CatalogLayoutVipGiftsView: FC<CatalogLayoutProps> = props =>
     
     return (
         <>
-            <Text truncate shrink fontWeight="bold">{ giftsAvailable() }</Text>
+            <Text className="gnui-txt-white" truncate shrink fontWeight="bold">{ giftsAvailable() }</Text>
             <AutoGrid columnCount={ 1 } className="nitro-catalog-layout-vip-gifts-grid">
                 { (clubGifts.offers.length > 0) && clubGifts.offers.map(offer => <VipGiftItem key={ offer.offerId } offer={ offer } isAvailable={ (clubGifts.getOfferExtraData(offer.offerId).isSelectable && (clubGifts.giftsAvailable > 0)) } onSelect={ selectGift }/>) }
             </AutoGrid>
