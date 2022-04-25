@@ -17,7 +17,7 @@
             .navigator-item {
     
                 &:nth-child(odd) {
-                    background-color: #222;
+                    background-color: rgba(32, 32, 32, .4);
                 }
             }
         }
@@ -111,6 +111,16 @@
 
 .gnui-room-info-txt {
     color: #a9a9a9 !important;
+}
+
+.gnui-room-prev {
+    border-color: rgba(255, 255, 255, 0.05) !important;
+    background-color: rgba(82, 82, 82, 0.21);
+    border: 1px solid !important;
+}
+
+.gnui-room-prev.active {
+    border-color: rgba(255, 255, 255, 0.05) !important;
 }
 
 .border {

@@ -110,7 +110,7 @@ export const GroupTabBadgeView: FC<GroupTabBadgeViewProps> = props =>
     return (
         <Grid overflow="hidden" gap={ 1 }>
             <Column size={ 2 }>
-                <Flex center className="bg-muted rounded p-1">
+                <Flex center className="gnui-item-container border rounded p-1">
                     <LayoutBadgeImageView badgeCode={ getModifiedBadgeCode() } isGroup={ true } />
                 </Flex>
             </Column>

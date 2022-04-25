@@ -99,7 +99,7 @@ export const GroupTabColorsView: FC<GroupTabColorsViewProps> = props =>
     return (
         <Grid overflow="hidden">
             <Column size={ 2 } gap={ 1 }>
-                <Text bold>{ LocalizeText('group.edit.color.guild.color') }</Text>
+                <Text className="gnui-txt-white" bold>{ LocalizeText('group.edit.color.guild.color') }</Text>
                 { groupData.groupColors && (groupData.groupColors.length > 0) &&
                     <Flex overflow="hidden" className="rounded border">
                         <Base className="group-color-swatch" style={ { backgroundColor: '#' + getGroupColor(0) } } />
@@ -107,7 +107,7 @@ export const GroupTabColorsView: FC<GroupTabColorsViewProps> = props =>
                     </Flex> }
             </Column>
             <Column size={ 5 } gap={ 1 } overflow="hidden">
-                <Text bold>{ LocalizeText('group.edit.color.primary.color') }</Text>
+                <Text className="gnui-txt-white">{ LocalizeText('group.edit.color.primary.color') }</Text>
                 <AutoGrid gap={ 1 } columnCount={ 7 } columnMinWidth={ 16 } columnMinHeight={ 16 }>
                     { groupData.groupColors && groupCustomize.groupColorsA && groupCustomize.groupColorsA.map((item, index) =>
                     {
@@ -116,7 +116,7 @@ export const GroupTabColorsView: FC<GroupTabColorsViewProps> = props =>
                 </AutoGrid>
             </Column>
             <Column size={ 5 } gap={ 1 } overflow="hidden">
-                <Text bold>{ LocalizeText('group.edit.color.secondary.color') }</Text>
+                <Text className="gnui-txt-white">{ LocalizeText('group.edit.color.secondary.color') }</Text>
                 <AutoGrid gap={ 1 } columnCount={ 7 } columnMinWidth={ 16 } columnMinHeight={ 16 }>
                     { groupData.groupColors && groupCustomize.groupColorsB && groupCustomize.groupColorsB.map((item, index) =>
                     {

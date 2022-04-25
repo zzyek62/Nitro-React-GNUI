@@ -25,7 +25,7 @@ export const CatalogLayouGuildForumView: FC<CatalogLayoutProps> = props =>
         <>
             <CatalogFirstProductSelectorWidgetView />
             <Grid>
-                <Column className="bg-muted rounded p-2 text-black" size={ 7 } overflow="hidden">
+                <Column className="gnui-cat-bg-default rounded p-2 gnui-txt-swhite" size={ 7 } overflow="hidden">
                     <Base className="overflow-auto" dangerouslySetInnerHTML={ { __html: page.localization.getText(1) } } />
                 </Column>
                 <Column size={ 5 } overflow="hidden" gap={ 1 }>

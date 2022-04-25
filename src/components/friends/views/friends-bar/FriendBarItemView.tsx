@@ -33,7 +33,7 @@ export const FriendBarItemView: FC<{ friend: MessengerFriend }> = props =>
     if(!friend)
     {
         return (
-            <div ref={ elementRef } className="btn btn-primary friend-bar-item friend-bar-search">
+            <div ref={ elementRef } className="btn btn-warning gnui-txt-white friend-bar-item friend-bar-search">
                 <div className="friend-bar-item-head position-absolute"/>
                 <div className="text-truncate">{ LocalizeText('friend.bar.find.title') }</div>
             </div>

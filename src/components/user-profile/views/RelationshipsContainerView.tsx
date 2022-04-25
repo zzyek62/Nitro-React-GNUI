@@ -24,12 +24,12 @@ export const RelationshipsContainerView: FC<RelationshipsContainerViewProps> = p
 
         return (
             <Flex fullWidth gap={ 1 }>
-                <Flex center className="user-relationship">
+                <Flex center className="user-relationship gnui-txt-white">
                     <i className={ `nitro-friends-spritesheet icon-${ relationshipName }` } />
                 </Flex>
                 <Column grow gap={ 0 }>
-                    <Flex alignItems="center" justifyContent="between" className="bg-white rounded px-2 py-1 user-relationship">
-                        <Text small underline pointer onClick={ event => (relationshipInfo && (relationshipInfo.randomFriendId >= 1) && GetUserProfile(relationshipInfo.randomFriendId)) }>
+                    <Flex alignItems="center" justifyContent="between" className="gnui-profile-bg-default rounded px-2 py-1 user-relationship">
+                        <Text className="gnui-txt-white" small underline pointer onClick={ event => (relationshipInfo && (relationshipInfo.randomFriendId >= 1) && GetUserProfile(relationshipInfo.randomFriendId)) }>
                             { (!relationshipInfo || (relationshipInfo.friendCount === 0)) &&
                                 LocalizeText('extendedprofile.add.friends') }
                             { (relationshipInfo && (relationshipInfo.friendCount >= 1)) &&

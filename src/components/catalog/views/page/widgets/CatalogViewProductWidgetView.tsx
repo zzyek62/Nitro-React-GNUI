@@ -85,7 +85,7 @@ export const CatalogViewProductWidgetView: FC<{}> = props =>
     if(currentOffer.pricingModel === Offer.PRICING_MODEL_BUNDLE)
     {
         return (
-            <Column fit overflow="hidden" className="bg-muted p-2 rounded">
+            <Column fit overflow="hidden" className="gnui-cat-bg-default p-2 rounded">
                 <AutoGrid fullWidth columnCount={ 4 } className="nitro-catalog-layout-bundle-grid">
                     { (currentOffer.products.length > 0) && currentOffer.products.map((product, index) =>
                     {

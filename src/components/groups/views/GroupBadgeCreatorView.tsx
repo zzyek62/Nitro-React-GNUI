@@ -36,8 +36,8 @@ export const GroupBadgeCreatorView: FC<GroupBadgeCreatorViewProps> = props =>
             { ((selectedIndex < 0) && badgeParts && (badgeParts.length > 0)) && badgeParts.map((part, index) =>
             {
                 return (
-                    <Flex key={ index } alignItems="center" justifyContent="between" gap={ 2 } className="bg-muted rounded px-2 py-1">
-                        <Flex pointer center className="bg-muted rounded p-1" onClick={ event => setSelectedIndex(index) }>
+                    <Flex key={ index } alignItems="center" justifyContent="between" gap={ 2 } className="gnui-item-container border rounded px-2 py-1">
+                        <Flex pointer center className="gnui-item-prev border rounded p-1" onClick={ event => setSelectedIndex(index) }>
                             { (badgeParts[index].code && (badgeParts[index].code.length > 0)) &&
                                 <LayoutBadgeImageView badgeCode={ badgeParts[index].code } isGroup={ true } /> }
                             { (!badgeParts[index].code || !badgeParts[index].code.length) &&
@@ -64,7 +64,7 @@ export const GroupBadgeCreatorView: FC<GroupBadgeCreatorViewProps> = props =>
             { (selectedIndex >= 0) &&
                 <Grid gap={ 1 } columnCount={ 5 }>
                     { (badgeParts[selectedIndex].type === GroupBadgePart.SYMBOL) &&
-                        <Column pointer center className="bg-muted rounded p-1" onClick={ event => setPartProperty(selectedIndex, 'key', 0) }>
+                        <Column pointer center className="gnui-item-prev border rounded p-1" onClick={ event => setPartProperty(selectedIndex, 'key', 0) }>
                             <Flex center className="badge-image group-badge">
                                 <FontAwesomeIcon icon="times" />
                             </Flex>
@@ -72,7 +72,7 @@ export const GroupBadgeCreatorView: FC<GroupBadgeCreatorViewProps> = props =>
                     { ((badgeParts[selectedIndex].type === GroupBadgePart.BASE) ? groupCustomize.badgeBases : groupCustomize.badgeSymbols).map((item, index) =>
                     {
                         return (
-                            <Column key={ index } pointer center className="bg-muted rounded p-1" onClick={ event => setPartProperty(selectedIndex, 'key', item.id) }>
+                            <Column key={ index } pointer center className="gnui-item-prev border rounded p-1" onClick={ event => setPartProperty(selectedIndex, 'key', item.id) }>
                                 <LayoutBadgeImageView badgeCode={ GroupBadgePart.getCode(badgeParts[selectedIndex].type, item.id, badgeParts[selectedIndex].color, 4) } isGroup={ true } />
                             </Column>
                         );
