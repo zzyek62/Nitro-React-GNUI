@@ -34,7 +34,7 @@ export const CatalogLayoutDefaultView: FC<CatalogLayoutProps> = props =>
                             <CatalogAddOnBadgeWidgetView position="absolute" className="gnui-cat-bg-default rounded bottom-1 end-1" />
                         </Base>
                         <Column grow gap={ 1 }>
-                            <Text grow truncate>{ currentOffer.localizationName }</Text>
+                            <Text className="gnui-txt-white" grow truncate>{ currentOffer.localizationName }</Text>
                             <Flex justifyContent="between">
                                 <Column gap={ 1 }>
                                     <CatalogSpinnerWidgetView />

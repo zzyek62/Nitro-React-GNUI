@@ -50,7 +50,7 @@ export const WiredActionMoveAndRotateFurniView: FC<{}> = props =>
     return (
         <WiredActionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_BY_ID_BY_TYPE_OR_FROM_CONTEXT } hasSpecialInput={ true } save={ save }>
             <Column gap={ 1 }>
-                <Text bold>{ LocalizeText('wiredfurni.params.startdir') }</Text>
+                <Text className="gnui-txt-white" bold>{ LocalizeText('wiredfurni.params.startdir') }</Text>
                 <Flex gap={ 1 }>
                     { directionOptions.map(option =>
                     {
@@ -66,13 +66,13 @@ export const WiredActionMoveAndRotateFurniView: FC<{}> = props =>
                 </Flex>
             </Column>
             <Column gap={ 1 }>
-                <Text bold>{ LocalizeText('wiredfurni.params.turn') }</Text>
+                <Text className="gnui-txt-white" bold>{ LocalizeText('wiredfurni.params.turn') }</Text>
                 { rotationOptions.map(option =>
                 {
                     return (
                         <Flex key={ option } alignItems="center" gap={ 1 }>
                             <input className="form-check-input" type="radio" name="rotation" id={ `rotation${ option }` } checked={ (rotation === option) } onChange={ event => setRotation(option) } />
-                            <Text>{ LocalizeText(`wiredfurni.params.turn.${ option }`) }</Text>
+                            <Text className="gnui-txt-swhite">{ LocalizeText(`wiredfurni.params.turn.${ option }`) }</Text>
                         </Flex>
                     )
                 }) }

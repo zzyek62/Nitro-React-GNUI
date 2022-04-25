@@ -118,7 +118,7 @@ export const WiredActionGiveRewardView: FC<{}> = props =>
             <Column gap={ 1 }>
                 <Text bold>How often can a user be rewarded?</Text>
                 <Flex gap={ 1 }>
-                    <select className="form-select form-select-sm w-100" value={ rewardTime } onChange={ (e) => setRewardTime(Number(e.target.value)) }>
+                    <select className="form-select gnui-form-control form-select-sm w-100" value={ rewardTime } onChange={ (e) => setRewardTime(Number(e.target.value)) }>
                         <option value="0">Once</option>
                         <option value="3">Once every { limitationInterval } minutes</option>
                         <option value="2">Once every { limitationInterval } hours</option>

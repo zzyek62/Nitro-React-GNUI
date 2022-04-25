@@ -119,7 +119,7 @@ export const CatalogLayoutVipBuyView: FC<CatalogLayoutProps> = props =>
                 return <Button fullWidth variant="danger" disabled>{ LocalizeText('generic.failed') }</Button>;
             case CatalogPurchaseState.NONE:
             default:
-                return <Button fullWidth variant="success" onClick={ () => setPurchaseState(CatalogPurchaseState.CONFIRM) }>{ LocalizeText('buy') }</Button>;
+                return <Button fullWidth variant="warning" className="gnui-txt-white" onClick={ () => setPurchaseState(CatalogPurchaseState.CONFIRM) }>{ LocalizeText('buy') }</Button>;
         }
     }, [ pendingOffer, purchaseState, purchaseSubscription, getCurrencyAmount ]);
 

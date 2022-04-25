@@ -33,8 +33,8 @@ export const ChatHistoryView: FC<{}> = props =>
                     <Text variant="muted">{ item.timestamp }</Text>
                     { (item.type === ChatEntryType.TYPE_CHAT) &&
                         <>
-                            <Text pointer noWrap dangerouslySetInnerHTML={ { __html: (item.name + ':') } } />
-                            <Text textBreak wrap grow>{ item.message }</Text>
+                            <Text className="gnui-txt-white" pointer noWrap dangerouslySetInnerHTML={ { __html: (item.name + ':') } } />
+                            <Text className="gnui-txt-swhite" textBreak wrap grow>{ item.message }</Text>
                         </> }
                     { (item.type === ChatEntryType.TYPE_ROOM_INFO) &&
                         <>
