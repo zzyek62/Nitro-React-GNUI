@@ -21,7 +21,7 @@ export const NavigatorSearchResultItemView: FC<NavigatorSearchResultItemViewProp
     {
         const num: number = (100 * (roomData.userCount / roomData.maxUserCount));
 
-        let bg = 'bg-primary';
+        let bg = 'bg-success';
 
         if(num >= 92)
         {
