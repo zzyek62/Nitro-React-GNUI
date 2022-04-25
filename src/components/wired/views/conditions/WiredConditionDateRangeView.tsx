@@ -46,12 +46,12 @@ export const WiredConditionDateRangeView: FC<{}> = props =>
     return (
         <WiredConditionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } hasSpecialInput={ true } save={ save }>
             <Column gap={ 1 }>
-                <Text className="gnui-txt-white" bold>{ LocalizeText('wiredfurni.params.startdate') }</Text>
-                <input type="text" className="form-control gnui-form-control form-control-sm" value={ startDate } onChange={ (e) => setStartDate(e.target.value) } />
+                <Text bold>{ LocalizeText('wiredfurni.params.startdate') }</Text>
+                <input type="text" className="form-control form-control-sm" value={ startDate } onChange={ (e) => setStartDate(e.target.value) } />
             </Column>
             <Column gap={ 1 }>
-                <Text className="gnui-txt-white" bold>{ LocalizeText('wiredfurni.params.enddate') }</Text>
-                <input type="text" className="form-control gnui-form-control form-control-sm" value={ endDate } onChange={ (e) => setEndDate(e.target.value) } />
+                <Text bold>{ LocalizeText('wiredfurni.params.enddate') }</Text>
+                <input type="text" className="form-control form-control-sm" value={ endDate } onChange={ (e) => setEndDate(e.target.value) } />
             </Column>
         </WiredConditionBaseView>
     );

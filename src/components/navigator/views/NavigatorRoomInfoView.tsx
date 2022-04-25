@@ -135,11 +135,11 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
                                         <FontAwesomeIcon icon="link" title={ LocalizeText('navigator.embed.caption') } className="cursor-pointer" onClick={ event => CreateLinkEvent('navigator/toggle-room-link') } />
                                     </Column>
                                 </Flex>
-                                <Text className="gnui-txt-white" overflow="auto" style={ { maxHeight: 50 } }>{ navigatorData.enteredGuestRoom.description }</Text>
+                                <Text overflow="auto" style={ { maxHeight: 50 } }>{ navigatorData.enteredGuestRoom.description }</Text>
                                 { (navigatorData.enteredGuestRoom.habboGroupId > 0) &&
                                     <Flex pointer alignItems="center" gap={ 1 } onClick={ () => processAction('open_group_info') }>
                                         <LayoutBadgeImageView className="flex-none" badgeCode={ navigatorData.enteredGuestRoom.groupBadgeCode } isGroup={ true } />
-                                        <Text className="gnui-txt-swhite" underline>
+                                        <Text underline>
                                             { LocalizeText('navigator.guildbase', [ 'groupName' ], [ navigatorData.enteredGuestRoom.groupName ]) }
                                         </Text>
                                     </Flex> }
