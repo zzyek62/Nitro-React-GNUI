@@ -30,14 +30,14 @@ export const HelpIndexView: FC<{}> = props =>
     return (
         <>
             <Column gap={ 1 }>
-                <Text fontSize={ 3 }>{ LocalizeText('help.main.frame.title') }</Text>
-                <Text>{ LocalizeText('help.main.self.description') }</Text>
+                <Text className="gnui-txt-white" fontSize={ 3 }>{ LocalizeText('help.main.frame.title') }</Text>
+                <Text className="gnui-txt-swhite">{ LocalizeText('help.main.self.description') }</Text>
             </Column>
             <Column gap={ 1 }>
-                <Button onClick={ onReportClick }>{ LocalizeText('help.main.bully.subtitle') }</Button>
-                <Button onClick={ onNewHelpRequestClick }>{ LocalizeText('help.main.help.title') }</Button>
-                <Button disabled={ true }>{ LocalizeText('help.main.self.tips.title') }</Button>
-                <Button variant="link" className="text-black" onClick={ onRequestMySanctionStatusClick }>{ LocalizeText('help.main.my.sanction.status') }</Button>
+                <Button variant="warning" onClick={ onReportClick }>{ LocalizeText('help.main.bully.subtitle') }</Button>
+                <Button variant="warning" onClick={ onNewHelpRequestClick }>{ LocalizeText('help.main.help.title') }</Button>
+                <Button variant="warning" disabled={ true }>{ LocalizeText('help.main.self.tips.title') }</Button>
+                <Button variant="link" className="text-white" onClick={ onRequestMySanctionStatusClick }>{ LocalizeText('help.main.my.sanction.status') }</Button>
             </Column>
         </>
     )

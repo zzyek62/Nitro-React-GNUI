@@ -62,13 +62,13 @@ export const SelectReportedUserView: FC<{}> = props =>
     return (
         <>
             <Column gap={ 1 }>
-                <Text fontSize={ 4 }>{ LocalizeText('help.emergency.main.step.two.title') }</Text>
+                <Text className="gnui-txt-white" fontSize={ 4 }>{ LocalizeText('help.emergency.main.step.two.title') }</Text>
                 { (availableUsers.length > 0) &&
-                    <Text>{ LocalizeText('report.user.pick.user') }</Text> }
+                    <Text className="gnui-txt-swhite" >{ LocalizeText('report.user.pick.user') }</Text> }
             </Column>
             <Column gap={ 1 } overflow="hidden">
                 { !!!availableUsers.length &&
-                    <Text>{ LocalizeText('report.user.error.nolist') }</Text> }
+                    <Text className="gnui-txt-swhite" >{ LocalizeText('report.user.error.nolist') }</Text> }
                 { (availableUsers.length > 0) &&
                     <AutoGrid columnCount={ 1 } columnMinHeight={ 25 } gap={ 1 }>
                         { availableUsers.map((user, index) =>
@@ -82,10 +82,10 @@ export const SelectReportedUserView: FC<{}> = props =>
                     </AutoGrid> }
             </Column>
             <Flex gap={ 2 } justifyContent="between">
-                <Button variant="secondary" onClick={ back }>
+                <Button variant="warning" onClick={ back }>
                     { LocalizeText('generic.back') }
                 </Button>
-                <Button disabled={ (selectedUserId <= 0) } onClick={ submitUser }>
+                <Button variant="warning" disabled={ (selectedUserId <= 0) } onClick={ submitUser }>
                     { LocalizeText('help.emergency.main.submit.button') }
                 </Button>
             </Flex>

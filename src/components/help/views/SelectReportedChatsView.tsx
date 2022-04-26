@@ -66,17 +66,17 @@ export const SelectReportedChatsView: FC<{}> = props =>
                         {
                             return (
                                 <LayoutGridItem key={ chat.id } onClick={ event => selectChat(chat) } itemActive={ selectedChats.has(chat.id) }>
-                                    <Text>{ chat.message }</Text>
+                                    <Text className="gnui-txt-white" >{ chat.message }</Text>
                                 </LayoutGridItem>
                             );
                         }) }
                     </AutoGrid> }
             </Column>
             <Flex gap={ 2 } justifyContent="between">
-                <Button variant="secondary" onClick={ back }>
+                <Button variant="warning" onClick={ back }>
                     { LocalizeText('generic.back') }
                 </Button>
-                <Button disabled={ (selectedChats.size <= 0) } onClick={ submitChats }>
+                <Button variant="warning" disabled={ (selectedChats.size <= 0) } onClick={ submitChats }>
                     { LocalizeText('help.emergency.main.submit.button') }
                 </Button>
             </Flex>
