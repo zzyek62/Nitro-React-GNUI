@@ -33,9 +33,9 @@ export const ModToolsUserRoomVisitsView: FC<ModToolsUserRoomVisitsViewProps> = p
 
         return (
             <Grid key={ props.key } fullHeight={ false } style={ props.style } gap={ 1 } alignItems="center" className="text-black py-1 border-bottom">
-                <Text className="g-col-2">{ item.enterHour.toString().padStart(2, '0') }: { item.enterMinute.toString().padStart(2, '0') }</Text>
-                <Text className="g-col-7">{ item.roomName }</Text>
-                <Text bold underline pointer variant="primary" className="g-col-3" onClick={ event => TryVisitRoom(item.roomId) }>Visit Room</Text>
+                <Text className="gnui-txt-white g-col-2">{ item.enterHour.toString().padStart(2, '0') }: { item.enterMinute.toString().padStart(2, '0') }</Text>
+                <Text className="gnui-txt-white g-col-7">{ item.roomName }</Text>
+                <Text bold underline pointer variant="warning" className="g-col-3" onClick={ event => TryVisitRoom(item.roomId) }>Visit Room</Text>
             </Grid>
         );
     }
@@ -54,9 +54,9 @@ export const ModToolsUserRoomVisitsView: FC<ModToolsUserRoomVisitsViewProps> = p
                 <Column fullHeight gap={ 0 } overflow="hidden">
                     <Column gap={ 2 }>
                         <Grid gap={ 1 } className="text-black fw-bold border-bottom pb-1">
-                            <Base className="g-col-2">Time</Base>
-                            <Base className="g-col-7">Room name</Base>
-                            <Base className="g-col-3">Visit</Base>
+                            <Base className="gnui-txt-white g-col-2">Time</Base>
+                            <Base className="gnui-txt-white g-col-7">Room name</Base>
+                            <Base className="gnui-txt-white g-col-3">Visit</Base>
                         </Grid>
                     </Column>
                     <Column className="log-container striped-children" overflow="auto" gap={ 0 }>

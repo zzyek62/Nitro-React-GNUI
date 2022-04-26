@@ -14,7 +14,7 @@ export const ModToolsPickedIssuesTabView: FC<ModToolsPickedIssuesTabViewProps> =
     return (
         <Column gap={ 0 } overflow="hidden">
             <Column gap={ 2 }>
-                <Grid gap={ 1 } className="text-black fw-bold border-bottom pb-1">
+                <Grid gap={ 1 } className="text-white gnui-border-bottom pb-1">
                     <Base className="g-col-2">Type</Base>
                     <Base className="g-col-3">Room/Player</Base>
                     <Base className="g-col-4">Opened</Base>
@@ -25,7 +25,7 @@ export const ModToolsPickedIssuesTabView: FC<ModToolsPickedIssuesTabViewProps> =
                 { pickedIssues && (pickedIssues.length > 0) && pickedIssues.map(issue =>
                 {
                     return (
-                        <Grid key={ issue.issueId } gap={ 1 } alignItems="center" className="text-black py-1 border-bottom">
+                        <Grid key={ issue.issueId } gap={ 1 } alignItems="center" className="text-white py-1 gnui-border-bottom">
                             <Base className="g-col-2">{ issue.categoryId }</Base>
                             <Base className="g-col-3">{ issue.reportedUserName }</Base>
                             <Base className="g-col-4">{ new Date(Date.now() - issue.issueAgeInMilliseconds).toLocaleTimeString() }</Base>

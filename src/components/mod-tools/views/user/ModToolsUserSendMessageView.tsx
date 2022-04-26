@@ -36,10 +36,10 @@ export const ModToolsUserSendMessageView: FC<ModToolsUserSendMessageViewProps> =
     return (
         <NitroCardView className="nitro-mod-tools-user-message" theme="primary-slim" windowPosition={ DraggableWindowPosition.TOP_LEFT }>
             <NitroCardHeaderView headerText={ 'Send Message' } onCloseClick={ () => onCloseClick() } />
-            <NitroCardContentView className="text-black">
-                <Text>Message To: { user.username }</Text>
-                <textarea className="form-control" value={ message } onChange={ event => setMessage(event.target.value) }></textarea>
-                <Button fullWidth onClick={ sendMessage }>Send message</Button>
+            <NitroCardContentView className="text-white">
+                <Text className="gnui-txt-white">Message To: { user.username }</Text>
+                <textarea className="form-control gnui-form-control" value={ message } onChange={ event => setMessage(event.target.value) }></textarea>
+                <Button variant="warning" fullWidth onClick={ sendMessage }>Send message</Button>
             </NitroCardContentView>
         </NitroCardView>
     );

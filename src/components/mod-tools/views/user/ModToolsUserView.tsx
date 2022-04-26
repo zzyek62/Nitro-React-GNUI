@@ -119,8 +119,8 @@ export const ModToolsUserView: FC<ModToolsUserViewProps> = props =>
 
                                         return (
                                             <tr key={ index }>
-                                                <th scope="row">{ LocalizeText(property.localeKey) }</th>
-                                                <td>
+                                                <th className="gnui-txt-swhite" scope="row">{ LocalizeText(property.localeKey) }</th>
+                                                <td className="gnui-txt-white">
                                                     { property.value }
                                                     { property.showOnline &&
                                                     <i className={ `icon icon-pf-${ userInfo.online ? 'online' : 'offline' } ms-2` } /> }
@@ -132,16 +132,16 @@ export const ModToolsUserView: FC<ModToolsUserViewProps> = props =>
                             </table>
                         </Column>
                         <Column size={ 4 } gap={ 1 }>
-                            <Button onClick={ event => DispatchUiEvent(new ModToolsOpenUserChatlogEvent(userId)) }>
+                            <Button variant="warning" onClick={ event => DispatchUiEvent(new ModToolsOpenUserChatlogEvent(userId)) }>
                                 Room Chat
                             </Button>
-                            <Button onClick={ event => setSendMessageVisible(!sendMessageVisible) }>
+                            <Button variant="warning" onClick={ event => setSendMessageVisible(!sendMessageVisible) }>
                                 Send Message
                             </Button>
-                            <Button onClick={ event => setRoomVisitsVisible(!roomVisitsVisible) }>
+                            <Button variant="warning" onClick={ event => setRoomVisitsVisible(!roomVisitsVisible) }>
                                 Room Visits
                             </Button>
-                            <Button onClick={ event => setModActionVisible(!modActionVisible) }>
+                            <Button variant="warning" onClick={ event => setModActionVisible(!modActionVisible) }>
                                 Mod Action
                             </Button>
                         </Column>

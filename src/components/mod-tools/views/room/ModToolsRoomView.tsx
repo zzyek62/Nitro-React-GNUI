@@ -82,41 +82,41 @@ export const ModToolsRoomView: FC<ModToolsRoomViewProps> = props =>
                 <Flex gap={ 2 }>
                     <Column justifyContent="center" grow gap={ 1 }>
                         <Flex alignItems="center" gap={ 2 }>
-                            <Text bold align="end" className="col-7">Room Owner:</Text>
-                            <Text underline pointer truncate>{ ownerName }</Text>
+                            <Text align="end" className="gnui-txt-swhite col-7">Room Owner:</Text>
+                            <Text className="gnui-txt-white" underline pointer truncate>{ ownerName }</Text>
                         </Flex>
                         <Flex alignItems="center" gap={ 2 }>
-                            <Text bold align="end" className="col-7">Users in room:</Text>
-                            <Text>{ usersInRoom }</Text>
+                            <Text align="end" className="gnui-txt-swhite col-7">Users in room:</Text>
+                            <Text className="gnui-txt-white">{ usersInRoom }</Text>
                         </Flex>
                         <Flex alignItems="center" gap={ 2 }>
-                            <Text bold align="end" className="col-7">Owner in room:</Text>
-                            <Text>{ ownerInRoom ? 'Yes' : 'No' }</Text>
+                            <Text align="end" className="gnui-txt-swhite col-7">Owner in room:</Text>
+                            <Text className="gnui-txt-white">{ ownerInRoom ? 'Yes' : 'No' }</Text>
                         </Flex>
                     </Column>
                     <Column gap={ 1 }>
-                        <Button onClick={ event => TryVisitRoom(roomId) }>Visit Room</Button>
-                        <Button onClick={ event => DispatchUiEvent(new ModToolsOpenRoomChatlogEvent(roomId)) }>Chatlog</Button>
+                        <Button variant="warning" onClick={ event => TryVisitRoom(roomId) }>Visit Room</Button>
+                        <Button variant="warning" onClick={ event => DispatchUiEvent(new ModToolsOpenRoomChatlogEvent(roomId)) }>Chatlog</Button>
                     </Column>
                 </Flex>
-                <Column className="bg-muted rounded p-2" gap={ 1 }>
+                <Column className="gnui-item-container border rounded p-2" gap={ 1 }>
                     <Flex alignItems="center" gap={ 1 }>
                         <input className="form-check-input" type="checkbox" checked={ kickUsers } onChange={ event => setKickUsers(event.target.checked) } />
-                        <Text small>Kick everyone out</Text>
+                        <Text className="gnui-txt-white" small>Kick everyone out</Text>
                     </Flex>
                     <Flex alignItems="center" gap={ 1 }>
                         <input className="form-check-input" type="checkbox" checked={ lockRoom } onChange={ event => setLockRoom(event.target.checked) } />
-                        <Text small>Enable the doorbell</Text>
+                        <Text className="gnui-txt-white" small>Enable the doorbell</Text>
                     </Flex>
                     <Flex alignItems="center" gap={ 1 }>
                         <input className="form-check-input" type="checkbox" checked={ changeRoomName } onChange={ event => setChangeRoomName(event.target.checked) }/>
-                        <Text small>Change room name</Text>
+                        <Text className="gnui-txt-white" small>Change room name</Text>
                     </Flex>
                 </Column>
-                <textarea className="form-control" placeholder="Type a mandatory message to the users in this text box..." value={ message } onChange={ event => setMessage(event.target.value) }></textarea>
+                <textarea className="form-control gnui-form-control" placeholder="Type a mandatory message to the users in this text box..." value={ message } onChange={ event => setMessage(event.target.value) }></textarea>
                 <Flex justifyContent="between">
                     <Button variant="danger" onClick={ event => handleClick('send_message') }>Send Caution</Button>
-                    <Button onClick={ event => handleClick('alert_only') }>Send Alert only</Button>
+                    <Button variant="warning" onClick={ event => handleClick('alert_only') }>Send Alert only</Button>
                 </Flex>
             </NitroCardContentView>
         </NitroCardView>

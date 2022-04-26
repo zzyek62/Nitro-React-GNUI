@@ -187,17 +187,17 @@ export const ModToolsView: FC<{}> = props =>
             { isVisible &&
                 <NitroCardView uniqueKey="mod-tools" className="nitro-mod-tools" windowPosition={ DraggableWindowPosition.TOP_LEFT } theme="primary-slim" >
                     <NitroCardHeaderView headerText={ 'Mod Tools' } onCloseClick={ event => setIsVisible(false) } />
-                    <NitroCardContentView className="text-black" gap={ 1 }>
-                        <Button gap={ 1 } onClick={ event => handleClick('toggle_room') } disabled={ !currentRoomId } className="position-relative gnui-mod-btn">
+                    <NitroCardContentView className="text-white" gap={ 1 }>
+                        <Button variant="warning" gap={ 1 } onClick={ event => handleClick('toggle_room') } disabled={ !currentRoomId } className="position-relative">
                             <Base className="icon icon-small-room position-absolute start-1"/> Room Tool
                         </Button>
-                        <Button innerRef={ elementRef } gap={ 1 } onClick={ event => handleClick('toggle_room_chatlog') } disabled={ !currentRoomId } className="position-relative gnui-mod-btn">
+                        <Button variant="warning" innerRef={ elementRef } gap={ 1 } onClick={ event => handleClick('toggle_room_chatlog') } disabled={ !currentRoomId } className="position-relative">
                             <Base className="icon icon-chat-history position-absolute start-1"/> Chatlog Tool
                         </Button>
-                        <Button gap={ 1 } onClick={ () => handleClick('toggle_user_info') } disabled={ !selectedUser } className="position-relative gnui-mod-btn">
+                        <Button variant="warning" gap={ 1 } onClick={ () => handleClick('toggle_user_info') } disabled={ !selectedUser } className="position-relative">
                             <Base className="icon icon-user position-absolute start-1"/> User: { selectedUser ? selectedUser.username : '' }
                         </Button>
-                        <Button gap={ 1 } onClick={ () => setIsTicketsVisible(value => !value) } className="position-relative gnui-mod-btn">
+                        <Button variant="warning" gap={ 1 } onClick={ () => setIsTicketsVisible(value => !value) } className="position-relative">
                             <Base className="icon icon-tickets position-absolute start-1"/> Report Tool
                         </Button>
                     </NitroCardContentView>

@@ -153,21 +153,21 @@ export const ModToolsUserModActionView: FC<ModToolsUserModActionViewProps> = pro
         <NitroCardView className="nitro-mod-tools-user-action" theme="primary-slim" windowPosition={ DraggableWindowPosition.TOP_LEFT }>
             <NitroCardHeaderView headerText={ 'Mod Action: ' + (user ? user.username : '') } onCloseClick={ () => onCloseClick() } />
             <NitroCardContentView className="text-black">
-                <select className="form-select form-select-sm" value={ selectedTopic } onChange={ event => setSelectedTopic(parseInt(event.target.value)) }>
+                <select className="form-select gnui-form-control form-select-sm" value={ selectedTopic } onChange={ event => setSelectedTopic(parseInt(event.target.value)) }>
                     <option value={ -1 } disabled>CFH Topic</option>
                     { topics.map((topic, index) => <option key={ index } value={ index }>{ LocalizeText('help.cfh.topic.' + topic.id) }</option>) }
                 </select>
-                <select className="form-select form-select-sm" value={ selectedAction } onChange={ event => setSelectedAction(parseInt(event.target.value)) }>
+                <select className="form-select gnui-form-control form-select-sm" value={ selectedAction } onChange={ event => setSelectedAction(parseInt(event.target.value)) }>
                     <option value={ -1 } disabled>Sanction Type</option>
                     { MOD_ACTION_DEFINITIONS.map((action, index) => <option key={ index } value={ index }>{ action.name }</option>) }
                 </select>
                 <Column gap={ 1 }>
                     <Text small>Optional message type, overrides default</Text>
-                    <textarea className="form-control" value={ message } onChange={ event => setMessage(event.target.value) }/>
+                    <textarea className="form-control gnui-form-control" value={ message } onChange={ event => setMessage(event.target.value) }/>
                 </Column>
                 <Flex justifyContent="between" gap={ 1 }>
-                    <Button variant="primary" onClick={ sendDefaultSanction }>Default Sanction</Button>
-                    <Button variant="success" onClick={ sendSanction }>Sanction</Button>
+                    <Button variant="warning" onClick={ sendDefaultSanction }>Default Sanction</Button>
+                    <Button variant="warning" onClick={ sendSanction }>Sanction</Button>
                 </Flex>
             </NitroCardContentView>
         </NitroCardView>
