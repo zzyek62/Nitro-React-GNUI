@@ -60,6 +60,15 @@
   .btn-#{$color} {
     @include button-variant($value, $value);
   }
+  .btn-warning {
+    background-color: #ca9c14;
+    border-color: #ca9c14;
+    box-shadow: inset 0 2px 0 rgba(255, 255, 255, .15), inset 0 -2px rgba(0, 0, 0, .10), 0 1px rgba(0, 0, 0, .10);
+  }
+  .btn-warning:hover {
+    background-color: #dfad16;
+    border-color: #dfad16;
+  }
 }
 
 @each $color, $value in $theme-colors {
