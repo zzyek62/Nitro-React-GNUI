@@ -118,45 +118,45 @@ export const FloorplanOptionsView: FC<{}> = props =>
         <Column>
             <Flex gap={ 1 }>
                 <Column size={ 5 } gap={ 1 }>
-                    <Text bold>{ LocalizeText('floor.plan.editor.draw.mode') }</Text>
+                    <Text className="gnui-txt-swhite" bold>{ LocalizeText('floor.plan.editor.draw.mode') }</Text>
                     <Flex gap={ 3 }>
                         <Flex gap={ 1 }>
-                            <LayoutGridItem itemActive={ (floorAction === FloorAction.SET) } onClick={ event => selectAction(FloorAction.SET) }>
+                            <LayoutGridItem className="gnui-item-prev" itemActive={ (floorAction === FloorAction.SET) } onClick={ event => selectAction(FloorAction.SET) }>
                                 <i className="icon icon-set-tile" />
                             </LayoutGridItem>
-                            <LayoutGridItem itemActive={ (floorAction === FloorAction.UNSET) } onClick={ event => selectAction(FloorAction.UNSET) }>
+                            <LayoutGridItem className="gnui-item-prev" itemActive={ (floorAction === FloorAction.UNSET) } onClick={ event => selectAction(FloorAction.UNSET) }>
                                 <i className="icon icon-unset-tile" />
                             </LayoutGridItem>
                         </Flex>
                         <Flex gap={ 1 }>
-                            <LayoutGridItem itemActive={ (floorAction === FloorAction.UP) } onClick={ event => selectAction(FloorAction.UP) }>
+                            <LayoutGridItem className="gnui-item-prev" itemActive={ (floorAction === FloorAction.UP) } onClick={ event => selectAction(FloorAction.UP) }>
                                 <i className="icon icon-increase-height" />
                             </LayoutGridItem>
-                            <LayoutGridItem itemActive={ (floorAction === FloorAction.DOWN) } onClick={ event => selectAction(FloorAction.DOWN) }>
+                            <LayoutGridItem className="gnui-item-prev" itemActive={ (floorAction === FloorAction.DOWN) } onClick={ event => selectAction(FloorAction.DOWN) }>
                                 <i className="icon icon-decrease-height" />
                             </LayoutGridItem>
                         </Flex>
-                        <LayoutGridItem itemActive={ (floorAction === FloorAction.DOOR) } onClick={ event => selectAction(FloorAction.DOOR) }>
+                        <LayoutGridItem className="gnui-item-prev" itemActive={ (floorAction === FloorAction.DOOR) } onClick={ event => selectAction(FloorAction.DOOR) }>
                             <i className="icon icon-set-door" />
                         </LayoutGridItem>
                     </Flex>
                 </Column>
                 <Column alignItems="center" size={ 4 }>
-                    <Text bold>{ LocalizeText('floor.plan.editor.enter.direction') }</Text>
+                    <Text className="gnui-txt-swhite" bold>{ LocalizeText('floor.plan.editor.enter.direction') }</Text>
                     <i className={ `icon icon-door-direction-${ visualizationSettings.entryPointDir } cursor-pointer` } onClick={ changeDoorDirection } />
                 </Column>
                 <Column size={ 3 }>
-                    <Text bold>{ LocalizeText('floor.editor.wall.height') }</Text>
+                    <Text className="gnui-txt-swhite" bold>{ LocalizeText('floor.editor.wall.height') }</Text>
                     <Flex alignItems="center" gap={ 1 }>
                         <FontAwesomeIcon icon="caret-left" className="cursor-pointer" onClick={ decreaseWallHeight } />
-                        <input type="number" className="form-control form-control-sm quantity-input" value={ visualizationSettings.wallHeight } onChange={ event => onWallHeightChange(event.target.valueAsNumber) } />
+                        <input type="number" className="form-control gnui-form-control form-control-sm quantity-input" value={ visualizationSettings.wallHeight } onChange={ event => onWallHeightChange(event.target.valueAsNumber) } />
                         <FontAwesomeIcon icon="caret-right" className="cursor-pointer" onClick={ increaseWallHeight } />
                     </Flex>
                 </Column>
             </Flex>
             <Flex gap={ 1 }>
                 <Column size={ 6 }>
-                    <Text bold>{ LocalizeText('floor.plan.editor.tile.height') }: { floorHeight }</Text>
+                    <Text className="gnui-txt-swhite" bold>{ LocalizeText('floor.plan.editor.tile.height') }: { floorHeight }</Text>
                     <ReactSlider
                         className="nitro-slider"
                         min={ MIN_FLOOR_HEIGHT }
@@ -167,15 +167,15 @@ export const FloorplanOptionsView: FC<{}> = props =>
                         renderThumb={ ({ style, ...rest }, state) => <div style={ { backgroundColor: `#${ COLORMAP[state.valueNow.toString(33)] }`, ...style } } { ...rest }>{ state.valueNow }</div> } />
                 </Column>
                 <Column size={ 6 }>
-                    <Text bold>{ LocalizeText('floor.plan.editor.room.options') }</Text>
+                    <Text className="gnui-txt-swhite" bold>{ LocalizeText('floor.plan.editor.room.options') }</Text>
                     <Flex className="align-items-center">
-                        <select className="form-control form-control-sm" value={ visualizationSettings.thicknessWall } onChange={ event => onWallThicknessChange(parseInt(event.target.value)) }>
+                        <select className="form-control gnui-form-control form-control-sm" value={ visualizationSettings.thicknessWall } onChange={ event => onWallThicknessChange(parseInt(event.target.value)) }>
                             <option value={ 0 }>{ LocalizeText('navigator.roomsettings.wall_thickness.thinnest') }</option>
                             <option value={ 1 }>{ LocalizeText('navigator.roomsettings.wall_thickness.thin') }</option>
                             <option value={ 2 }>{ LocalizeText('navigator.roomsettings.wall_thickness.normal') }</option>
                             <option value={ 3 }>{ LocalizeText('navigator.roomsettings.wall_thickness.thick') }</option>
                         </select>
-                        <select className="form-control form-control-sm" value={ visualizationSettings.thicknessFloor } onChange={ event => onFloorThicknessChange(parseInt(event.target.value)) }>
+                        <select className="form-control gnui-form-control form-control-sm" value={ visualizationSettings.thicknessFloor } onChange={ event => onFloorThicknessChange(parseInt(event.target.value)) }>
                             <option value={ 0 }>{ LocalizeText('navigator.roomsettings.floor_thickness.thinnest') }</option>
                             <option value={ 1 }>{ LocalizeText('navigator.roomsettings.floor_thickness.thin') }</option>
                             <option value={ 2 }>{ LocalizeText('navigator.roomsettings.floor_thickness.normal') }</option>

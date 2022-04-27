@@ -158,11 +158,11 @@ export const FloorplanEditorView: FC<{}> = props =>
                         <FloorplanOptionsView />
                         <FloorplanCanvasView overflow="hidden" />
                         <Flex justifyContent="between">
-                            <Button onClick={ revertChanges }>{ LocalizeText('floor.plan.editor.reload') }</Button>
+                            <Button variant="warning" onClick={ revertChanges }>{ LocalizeText('floor.plan.editor.reload') }</Button>
                             <ButtonGroup>
-                                <Button disabled={ true }>{ LocalizeText('floor.plan.editor.preview') }</Button>
-                                <Button onClick={ event => setImportExportVisible(true) }>{ LocalizeText('floor.plan.editor.import.export') }</Button>
-                                <Button onClick={ saveFloorChanges }>{ LocalizeText('floor.plan.editor.save') }</Button>
+                                <Button variant="warning" disabled={ true }>{ LocalizeText('floor.plan.editor.preview') }</Button>
+                                <Button variant="warning" onClick={ event => setImportExportVisible(true) }>{ LocalizeText('floor.plan.editor.import.export') }</Button>
+                                <Button variant="warning" onClick={ saveFloorChanges }>{ LocalizeText('floor.plan.editor.save') }</Button>
                             </ButtonGroup>
                         </Flex>
                     </NitroCardContentView>
