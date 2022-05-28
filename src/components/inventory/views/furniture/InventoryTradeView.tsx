@@ -160,7 +160,7 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
                             return (
                                 <LayoutGridItem key={ index } className={ !count ? 'opacity-0-5 ' : '' } itemImage={ item.iconUrl } itemCount={ count } itemActive={ (groupItem === item) } itemUniqueNumber={ item.stuffData.uniqueNumber } onClick={ event => (count && setGroupItem(item)) }>
                                     { ((count > 0) && (groupItem === item)) &&
-                                    <Button position="absolute" variant="success" className="trade-button bottom-1 end-1" onClick={ event => attemptItemOffer(1) }>
+                                    <Button position="absolute" variant="warning" className="trade-button bottom-1 end-1" onClick={ event => attemptItemOffer(1) }>
                                         <FontAwesomeIcon icon="chevron-right" />
                                     </Button> }
                                 </LayoutGridItem>
@@ -223,15 +223,15 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
                 <Flex grow justifyContent="between">
                     <Button variant="danger" onClick={ cancelTrade }>{ LocalizeText('generic.cancel') }</Button>
                     { (tradeState === TradeState.TRADING_STATE_READY) &&
-                        <Button variant="secondary" disabled={ (!ownUser.itemCount && !otherUser.itemCount) } onClick={ progressTrade }>{ LocalizeText('inventory.trading.accept') }</Button> }
+                        <Button variant="warning" disabled={ (!ownUser.itemCount && !otherUser.itemCount) } onClick={ progressTrade }>{ LocalizeText('inventory.trading.accept') }</Button> }
                     { (tradeState === TradeState.TRADING_STATE_RUNNING) &&
-                        <Button variant="secondary" disabled={ (!ownUser.itemCount && !otherUser.itemCount) } onClick={ progressTrade }>{ LocalizeText(ownUser.accepts ? 'inventory.trading.modify' : 'inventory.trading.accept') }</Button> }
+                        <Button variant="warning" disabled={ (!ownUser.itemCount && !otherUser.itemCount) } onClick={ progressTrade }>{ LocalizeText(ownUser.accepts ? 'inventory.trading.modify' : 'inventory.trading.accept') }</Button> }
                     { (tradeState === TradeState.TRADING_STATE_COUNTDOWN) &&
-                        <Button variant="secondary" disabled>{ LocalizeText('inventory.trading.countdown', [ 'counter' ], [ countdownTick.toString() ]) }</Button> }
+                        <Button variant="warning" disabled>{ LocalizeText('inventory.trading.countdown', [ 'counter' ], [ countdownTick.toString() ]) }</Button> }
                     { (tradeState === TradeState.TRADING_STATE_CONFIRMING) &&
-                        <Button variant="secondary" onClick={ progressTrade }>{ LocalizeText('inventory.trading.button.restore') }</Button> }
+                        <Button variant="warning" onClick={ progressTrade }>{ LocalizeText('inventory.trading.button.restore') }</Button> }
                     { (tradeState === TradeState.TRADING_STATE_CONFIRMED) &&
-                        <Button variant="secondary">{ LocalizeText('inventory.trading.info.waiting') }</Button> }
+                        <Button variant="warning">{ LocalizeText('inventory.trading.info.waiting') }</Button> }
                 </Flex>
             </Column>
         </Grid>
