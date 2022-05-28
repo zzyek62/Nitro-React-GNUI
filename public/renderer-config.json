@@ -1,6 +1,6 @@
 {
     "socket.url": "ws://ws.localhost:2096",
-    "asset.url": "http://localhost/nitro-assets",
+    "asset.url": "https://cs09.co/nitro-assets",
     "image.library.url": "${asset.url}/c_images/",
     "hof.furni.url": "${asset.url}/furniture/nitro",
     "images.url": "${asset.url}/images",
