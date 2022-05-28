@@ -47,8 +47,8 @@ export const AvatarEditorFigurePreviewView: FC<AvatarEditorFigurePreviewViewProp
     }, [ figureData, rerender ] );
 
     return (
-        <Column className="figure-preview-container" overflow="hidden" position="relative">
-            <LayoutAvatarImageView figure={ figureData.getFigureString() } direction={ figureData.direction } scale={ 2 } />
+        <Column className="figure-preview-container gnui-item-container" overflow="hidden" position="relative">
+            <LayoutAvatarImageView className="test" figure={ figureData.getFigureString() } direction={ figureData.direction } scale={ 2 } />
             <AvatarEditorIcon className="avatar-spotlight" icon="spotlight" />
             <Base className="avatar-shadow" />
             <Base className="arrow-container">

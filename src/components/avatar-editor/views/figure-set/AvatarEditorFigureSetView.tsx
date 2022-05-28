@@ -32,7 +32,7 @@ export const AvatarEditorFigureSetView: FC<AvatarEditorFigureSetViewProps> = pro
     return (
         <AutoGrid columnCount={ 3 } columnMinHeight={ 50 }>
             { (category.parts.length > 0) && category.parts.map((item, index) =>
-                <AvatarEditorFigureSetItemView key={ index } partItem={ item } onClick={ event => selectPart(item) } />) }
+                <AvatarEditorFigureSetItemView className="gnui-item-prev" key={ index } partItem={ item } onClick={ event => selectPart(item) } />) }
         </AutoGrid>
     );
 }
