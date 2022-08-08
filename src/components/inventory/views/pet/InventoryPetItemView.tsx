@@ -1,10 +1,10 @@
 import { MouseEventType } from '@nitrots/nitro-renderer';
-import { FC, MouseEvent, useState } from 'react';
+import { FC, MouseEvent, PropsWithChildren, useState } from 'react';
 import { attemptPetPlacement, IPetItem, UnseenItemCategory } from '../../../../api';
 import { LayoutGridItem, LayoutPetImageView } from '../../../../common';
 import { useInventoryPets, useInventoryUnseenTracker } from '../../../../hooks';
 
-export const InventoryPetItemView: FC<{ petItem: IPetItem }> = props =>
+export const InventoryPetItemView: FC<PropsWithChildren<{ petItem: IPetItem }>> = props =>
 {
     const { petItem = null, children = null, ...rest } = props;
     const [ isMouseDown, setMouseDown ] = useState(false);
@@ -28,11 +28,14 @@ export const InventoryPetItemView: FC<{ petItem: IPetItem }> = props =>
 
                 attemptPetPlacement(petItem);
                 return;
+            case 'dblclick':
+                attemptPetPlacement(petItem);
+                return;
         }
     }
-    
+
     return (
-        <LayoutGridItem itemActive={ (petItem === selectedPet) } itemUnseen={ unseen } onMouseDown={ onMouseEvent } onMouseUp={ onMouseEvent } onMouseOut={ onMouseEvent } { ...rest }>
+        <LayoutGridItem itemActive={ (petItem === selectedPet) } itemUnseen={ unseen } onMouseDown={ onMouseEvent } onMouseUp={ onMouseEvent } onMouseOut={ onMouseEvent } onDoubleClick={ onMouseEvent } { ...rest }>
             <LayoutPetImageView figure={ petItem.petData.figureData.figuredata } direction={ 3 } headOnly={ true } />
             { children }
         </LayoutGridItem>

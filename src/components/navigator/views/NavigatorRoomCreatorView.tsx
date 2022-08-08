@@ -1,9 +1,9 @@
 /* eslint-disable no-template-curly-in-string */
-import { HabboClubLevelEnum, RoomCreateComposer } from '@nitrots/nitro-renderer';
+import { CreateFlatMessageComposer, HabboClubLevelEnum } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
 import { GetClubMemberLevel, GetConfiguration, IRoomModel, LocalizeText, SendMessageComposer } from '../../../api';
 import { Button, Column, Flex, Grid, LayoutCurrencyIcon, LayoutGridItem, Text } from '../../../common';
-import { useNavigatorContext } from '../NavigatorContext';
+import { useNavigator } from '../../../hooks';
 
 export const NavigatorRoomCreatorView: FC<{}> = props =>
 {
@@ -15,7 +15,7 @@ export const NavigatorRoomCreatorView: FC<{}> = props =>
     const [ tradesSetting, setTradesSetting ] = useState<number>(0);
     const [ roomModels, setRoomModels ] = useState<IRoomModel[]>([]);
     const [ selectedModelName, setSelectedModelName ] = useState<string>('');
-    const { categories = null } = useNavigatorContext();
+    const { categories = null } = useNavigator();
 
     const hcDisabled = GetConfiguration<boolean>('hc.disabled', false);
 
@@ -30,7 +30,7 @@ export const NavigatorRoomCreatorView: FC<{}> = props =>
 
     const createRoom = () =>
     {
-        SendMessageComposer(new RoomCreateComposer(name, description, 'model_' + selectedModelName, Number(category), Number(visitorsCount), tradesSetting));
+        SendMessageComposer(new CreateFlatMessageComposer(name, description, 'model_' + selectedModelName, Number(category), Number(visitorsCount), tradesSetting));
     };
 
     useEffect(() =>
@@ -54,7 +54,7 @@ export const NavigatorRoomCreatorView: FC<{}> = props =>
     useEffect(() =>
     {
         const models = GetConfiguration<IRoomModel[]>('navigator.room.models');
-        
+
         if(models && models.length)
         {
             setRoomModels(models);

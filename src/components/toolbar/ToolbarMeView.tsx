@@ -1,9 +1,8 @@
 import { MouseEventType, RoomObjectCategory } from '@nitrots/nitro-renderer';
-import { Dispatch, FC, SetStateAction, useEffect, useRef } from 'react';
-import { CreateLinkEvent, GetRoomEngine, GetRoomSession, GetSessionDataManager, GetUserProfile } from '../../api';
+import { Dispatch, FC, PropsWithChildren, SetStateAction, useEffect, useRef } from 'react';
+import { CreateLinkEvent, DispatchUiEvent, GetRoomEngine, GetRoomSession, GetSessionDataManager, GetUserProfile } from '../../api';
 import { Base, Flex, LayoutItemCountView } from '../../common';
 import { GuideToolEvent } from '../../events';
-import { DispatchUiEvent } from '../../hooks';
 
 interface ToolbarMeViewProps
 {
@@ -12,7 +11,7 @@ interface ToolbarMeViewProps
     setMeExpanded: Dispatch<SetStateAction<boolean>>;
 }
 
-export const ToolbarMeView: FC<ToolbarMeViewProps> = props =>
+export const ToolbarMeView: FC<PropsWithChildren<ToolbarMeViewProps>> = props =>
 {
     const { useGuideTool = false, unseenAchievementCount = 0, setMeExpanded = null, children = null, ...rest } = props;
     const elementRef = useRef<HTMLDivElement>();

@@ -1,7 +1,7 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, PropsWithChildren, useEffect, useState } from 'react';
 import { GetSessionDataManager, LocalizeText, WiredFurniType, WiredSelectionVisualizer } from '../../../api';
 import { Button, Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../common';
-import { useWiredContext } from '../WiredContext';
+import { useWired } from '../../../hooks';
 import { WiredFurniSelectorView } from './WiredFurniSelectorView';
 
 export interface WiredBaseViewProps
@@ -13,15 +13,15 @@ export interface WiredBaseViewProps
     validate?: () => boolean;
 }
 
-export const WiredBaseView: FC<WiredBaseViewProps> = props =>
+export const WiredBaseView: FC<PropsWithChildren<WiredBaseViewProps>> = props =>
 {
     const { wiredType = '', requiresFurni = WiredFurniType.STUFF_SELECTION_OPTION_NONE, save = null, validate = null, children = null, hasSpecialInput = false } = props;
     const [ wiredName, setWiredName ] = useState<string>(null);
     const [ wiredDescription, setWiredDescription ] = useState<string>(null);
     const [ needsSave, setNeedsSave ] = useState<boolean>(false);
-    const { trigger = null, setTrigger = null, setIntParams = null, setStringParam = null, setFurniIds = null, saveWired = null } = useWiredContext();
+    const { trigger = null, setTrigger = null, setIntParams = null, setStringParam = null, setFurniIds = null, saveWired = null } = useWired();
 
-    const close = () => setTrigger(null);
+    const onClose = () => setTrigger(null);
     
     const onSave = () =>
     {
@@ -81,24 +81,11 @@ export const WiredBaseView: FC<WiredBaseViewProps> = props =>
                 return [];
             });
         }
-
-        return () =>
-        {
-            setNeedsSave(false);
-            setIntParams([]);
-            setStringParam(null);
-            setFurniIds(prevValue =>
-            {
-                if(prevValue && prevValue.length) WiredSelectionVisualizer.clearSelectionShaderFromFurni(prevValue);
-
-                return [];
-            });
-        }
     }, [ trigger, hasSpecialInput, requiresFurni, setIntParams, setStringParam, setFurniIds ]);
 
     return (
         <NitroCardView uniqueKey="nitro-wired" className="nitro-wired" theme="primary-slim">
-            <NitroCardHeaderView headerText={ LocalizeText('wiredfurni.title') } onCloseClick={ close } />
+            <NitroCardHeaderView headerText={ LocalizeText('wiredfurni.title') } onCloseClick={ onClose } />
             <NitroCardContentView>
                 <Column gap={ 1 }>
                     <Flex alignItems="center" gap={ 1 }>
@@ -115,8 +102,8 @@ export const WiredBaseView: FC<WiredBaseViewProps> = props =>
                         <WiredFurniSelectorView />
                     </> }
                 <Flex alignItems="center" gap={ 1 }>
-                    <Button fullWidth variant="warning" className="gnui-txt-white" onClick={ onSave }>{ LocalizeText('wiredfurni.ready') }</Button>
-                    <Button fullWidth variant="danger" onClick={ close }>{ LocalizeText('cancel') }</Button>
+                    <Button fullWidth variant="success" onClick={ onSave }>{ LocalizeText('wiredfurni.ready') }</Button>
+                    <Button fullWidth variant="secondary" onClick={ onClose }>{ LocalizeText('cancel') }</Button>
                 </Flex>
             </NitroCardContentView>
         </NitroCardView>

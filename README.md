@@ -1,4 +1,4 @@
-# Nitro React
+# Nitro React v2.1
 
 Nitro React is the second version of Nitro and it is the first stable Habbo client written in Javascript using React. The Project is maintained by Bill and the Nitro Development Team. If you want to know more about Nitro and how development is going you can check out their [discord server](https://discord.gg/CfAjferVV2).
 
@@ -10,10 +10,10 @@ The whole Nitro project is open sourced, check it out [here](https://git.krews.o
 
 ## Prerequisites
 
--   You must have [git](https://git-scm.com/) installed
--   You must have [NodeJS](https://nodejs.org/) >= 16.13 installed
--   We recommend you use [Yarn](https://yarnpkg.com/) over [npm](https://npmjs.com/)
-    -   `npm i yarn -g`
+-   [Git](https://git-scm.com/)
+-   [NodeJS](https://nodejs.org/) >= 18
+    - If using NodeJS < 18 remove `--openssl-legacy-provider` from the package.json scripts
+-   [Yarn](https://yarnpkg.com/) `npm i yarn -g`
 
 ## Installation
 

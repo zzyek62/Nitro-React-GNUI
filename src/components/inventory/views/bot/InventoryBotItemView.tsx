@@ -1,10 +1,10 @@
 import { MouseEventType } from '@nitrots/nitro-renderer';
-import { FC, MouseEvent, useState } from 'react';
+import { FC, MouseEvent, PropsWithChildren, useState } from 'react';
 import { attemptBotPlacement, IBotItem, UnseenItemCategory } from '../../../../api';
 import { LayoutAvatarImageView, LayoutGridItem } from '../../../../common';
 import { useInventoryBots, useInventoryUnseenTracker } from '../../../../hooks';
 
-export const InventoryBotItemView: FC<{ botItem: IBotItem }> = props =>
+export const InventoryBotItemView: FC<PropsWithChildren<{ botItem: IBotItem }>> = props =>
 {
     const { botItem = null, children = null, ...rest } = props;
     const [ isMouseDown, setMouseDown ] = useState(false);
@@ -28,11 +28,14 @@ export const InventoryBotItemView: FC<{ botItem: IBotItem }> = props =>
 
                 attemptBotPlacement(botItem);
                 return;
+            case 'dblclick':
+                attemptBotPlacement(botItem);
+                return;
         }
     }
 
     return (
-        <LayoutGridItem itemActive={ (selectedBot === botItem) } itemUnseen={ unseen } onMouseDown={ onMouseEvent } onMouseUp={ onMouseEvent } onMouseOut={ onMouseEvent } { ...rest }>
+        <LayoutGridItem itemActive={ (selectedBot === botItem) } itemUnseen={ unseen } onMouseDown={ onMouseEvent } onMouseUp={ onMouseEvent } onMouseOut={ onMouseEvent } onDoubleClick={ onMouseEvent } { ...rest }>
             <LayoutAvatarImageView figure={ botItem.botData.figure } direction={ 3 } headOnly={ true } />
             { children }
         </LayoutGridItem>

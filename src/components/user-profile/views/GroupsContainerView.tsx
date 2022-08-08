@@ -1,8 +1,8 @@
 import { GroupInformationComposer, GroupInformationEvent, GroupInformationParser, HabboGroupEntryData } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { SendMessageComposer, ToggleFavoriteGroup } from '../../../api';
 import { AutoGrid, Base, Column, Flex, Grid, GridProps, LayoutBadgeImageView, LayoutGridItem } from '../../../common';
-import { UseMessageEventHook } from '../../../hooks';
+import { useMessageEvent } from '../../../hooks';
 import { GroupInformationView } from '../../groups/views/GroupInformationView';
 
 interface GroupsContainerViewProps extends GridProps
@@ -18,16 +18,14 @@ export const GroupsContainerView: FC<GroupsContainerViewProps> = props =>
     const [ selectedGroupId, setSelectedGroupId ] = useState<number>(null);
     const [ groupInformation, setGroupInformation ] = useState<GroupInformationParser>(null);
 
-    const onGroupInformationEvent = useCallback((event: GroupInformationEvent) =>
+    useMessageEvent<GroupInformationEvent>(GroupInformationEvent, event =>
     {
         const parser = event.getParser();
 
         if(!selectedGroupId || (selectedGroupId !== parser.id) || parser.flag) return;
 
         setGroupInformation(parser);
-    }, [ selectedGroupId ]);
-
-    UseMessageEventHook(GroupInformationEvent, onGroupInformationEvent);
+    });
 
     useEffect(() =>
     {

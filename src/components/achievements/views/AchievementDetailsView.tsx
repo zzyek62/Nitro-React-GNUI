@@ -1,6 +1,6 @@
 import { AchievementData } from '@nitrots/nitro-renderer';
-import { FC } from 'react';
-import { GetAchievementBadgeCode, GetAchievementLevel, LocalizeBadgeDescription, LocalizeBadgeName, LocalizeText } from '../../../api';
+import { FC, PropsWithChildren } from 'react';
+import { AchievementUtilities, LocalizeBadgeDescription, LocalizeBadgeName, LocalizeText } from '../../../api';
 import { Column, Flex, LayoutCurrencyIcon, LayoutProgressBar, Text } from '../../../common';
 import { AchievementBadgeView } from './AchievementBadgeView';
 
@@ -9,7 +9,7 @@ interface AchievementDetailsViewProps
     achievement: AchievementData;
 }
 
-export const AchievementDetailsView: FC<AchievementDetailsViewProps> = props =>
+export const AchievementDetailsView: FC<PropsWithChildren<AchievementDetailsViewProps>> = props =>
 {
     const { achievement = null, children = null, ...rest } = props;
 
@@ -20,16 +20,16 @@ export const AchievementDetailsView: FC<AchievementDetailsViewProps> = props =>
             <Column center gap={ 1 }>
                 <AchievementBadgeView className="nitro-achievements-badge-image" achievement={ achievement } scale={ 2 } />
                 <Text fontWeight="bold">
-                    { LocalizeText('achievements.details.level', [ 'level', 'limit' ], [ GetAchievementLevel(achievement).toString(), achievement.levelCount.toString() ]) }
+                    { LocalizeText('achievements.details.level', [ 'level', 'limit' ], [ AchievementUtilities.getAchievementLevel(achievement).toString(), achievement.levelCount.toString() ]) }
                 </Text>
             </Column>
             <Column fullWidth justifyContent="center" overflow="hidden">
                 <Column gap={ 1 }>
                     <Text fontWeight="bold" truncate>
-                        { LocalizeBadgeName(GetAchievementBadgeCode(achievement)) }
+                        { LocalizeBadgeName(AchievementUtilities.getAchievementBadgeCode(achievement)) }
                     </Text>
                     <Text textBreak>
-                        { LocalizeBadgeDescription(GetAchievementBadgeCode(achievement)) }
+                        { LocalizeBadgeDescription(AchievementUtilities.getAchievementBadgeCode(achievement)) }
                     </Text>
                 </Column>
                 { ((achievement.levelRewardPoints > 0) || (achievement.scoreLimit > 0)) &&

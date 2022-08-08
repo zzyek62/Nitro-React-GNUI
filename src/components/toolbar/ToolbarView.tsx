@@ -2,8 +2,7 @@ import { Dispose, DropBounce, EaseOut, JumpBy, Motions, NitroToolbarAnimateIconE
 import { FC, useCallback, useState } from 'react';
 import { CreateLinkEvent, GetSessionDataManager, MessengerIconState, OpenMessengerChat, VisitDesktop } from '../../api';
 import { Base, Flex, LayoutAvatarImageView, LayoutItemCountView, TransitionAnimation, TransitionAnimationTypes } from '../../common';
-import { ModToolsEvent } from '../../events';
-import { DispatchUiEvent, useAchievements, useFriends, useInventoryUnseenTracker, UseMessageEventHook, useMessenger, UseRoomEngineEvent, useSessionInfo } from '../../hooks';
+import { useAchievements, useFriends, useInventoryUnseenTracker, useMessageEvent, useMessenger, useRoomEngineEvent, useSessionInfo } from '../../hooks';
 import { ToolbarMeView } from './ToolbarMeView';
 
 export const ToolbarView: FC<{ isInRoom: boolean }> = props =>
@@ -18,15 +17,13 @@ export const ToolbarView: FC<{ isInRoom: boolean }> = props =>
     const { requests = [] } = useFriends();
     const { iconState = MessengerIconState.HIDDEN } = useMessenger();
     const isMod = GetSessionDataManager().isModerator;
-
-    const onPerkAllowancesMessageEvent = useCallback((event: PerkAllowancesMessageEvent) =>
+    
+    useMessageEvent<PerkAllowancesMessageEvent>(PerkAllowancesMessageEvent, event =>
     {
         const parser = event.getParser();
 
         setUseGuideTool(parser.isAllowed(PerkEnum.USE_GUIDE_TOOL));
-    }, [ setUseGuideTool ]);
-    
-    UseMessageEventHook(PerkAllowancesMessageEvent, onPerkAllowancesMessageEvent);
+    });
 
     const animationIconToToolbar = useCallback((iconName: string, image: HTMLImageElement, x: number, y: number) =>
     {
@@ -62,12 +59,10 @@ export const ToolbarView: FC<{ isInRoom: boolean }> = props =>
         Motions.runMotion(motion);
     }, []);
 
-    const onNitroToolbarAnimateIconEvent = useCallback((event: NitroToolbarAnimateIconEvent) =>
+    useRoomEngineEvent<NitroToolbarAnimateIconEvent>(NitroToolbarAnimateIconEvent.ANIMATE_ICON, event =>
     {
         animationIconToToolbar('icon-inventory', event.image, event.x, event.y);
-    }, [ animationIconToToolbar ]);
-
-    UseRoomEngineEvent(NitroToolbarAnimateIconEvent.ANIMATE_ICON, onNitroToolbarAnimateIconEvent);
+    });
 
     return (
         <>
@@ -95,7 +90,7 @@ export const ToolbarView: FC<{ isInRoom: boolean }> = props =>
                         { isInRoom &&
                             <Base pointer className="navigation-item icon icon-camera" onClick={ event => CreateLinkEvent('camera/toggle') } /> }
                         { isMod &&
-                            <Base pointer className="navigation-item icon icon-modtools" onClick={ event => DispatchUiEvent(new ModToolsEvent(ModToolsEvent.TOGGLE_MOD_TOOLS)) } /> }
+                            <Base pointer className="navigation-item icon icon-modtools" onClick={ event => CreateLinkEvent('mod-tools/toggle') } /> }
                     </Flex>
                     <Flex alignItems="center" id="toolbar-chat-input-container" />
                 </Flex>

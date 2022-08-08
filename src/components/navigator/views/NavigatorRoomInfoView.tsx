@@ -1,12 +1,11 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { RoomMuteComposer, RoomSettingsComposer, RoomStaffPickComposer, SecurityLevel, UserHomeRoomComposer } from '@nitrots/nitro-renderer';
+import { RoomMuteComposer, RoomSettingsComposer, SecurityLevel, ToggleStaffPickMessageComposer, UpdateHomeRoomMessageComposer } from '@nitrots/nitro-renderer';
 import classNames from 'classnames';
 import { FC, useEffect, useState } from 'react';
-import { CreateLinkEvent, GetGroupInformation, GetSessionDataManager, LocalizeText, SendMessageComposer } from '../../../api';
+import { CreateLinkEvent, DispatchUiEvent, GetGroupInformation, GetSessionDataManager, LocalizeText, SendMessageComposer } from '../../../api';
 import { Button, Column, Flex, LayoutBadgeImageView, LayoutRoomThumbnailView, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text, UserProfileIconView } from '../../../common';
 import { RoomWidgetThumbnailEvent } from '../../../events';
-import { DispatchUiEvent } from '../../../hooks';
-import { useNavigatorContext } from '../NavigatorContext';
+import { useNavigator } from '../../../hooks';
 
 export class NavigatorRoomInfoViewProps
 {
@@ -18,8 +17,7 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
     const { onCloseClick = null } = props;
     const [ isRoomPicked, setIsRoomPicked ] = useState(false);
     const [ isRoomMuted, setIsRoomMuted ] = useState(false);
-    const { navigatorData = null } = useNavigatorContext();
-
+    const { navigatorData = null } = useNavigator();
 
     const hasPermission = (permission: string) =>
     {
@@ -32,7 +30,7 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
             default: return false;
         }
     }
-    
+
     const processAction = (action: string, value?: string) =>
     {
         if(!navigatorData || !navigatorData.enteredGuestRoom) return;
@@ -47,7 +45,7 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
                     newRoomId = navigatorData.enteredGuestRoom.roomId;
                 }
 
-                if(newRoomId > 0) SendMessageComposer(new UserHomeRoomComposer(newRoomId));
+                if(newRoomId > 0) SendMessageComposer(new UpdateHomeRoomMessageComposer(newRoomId));
                 return;
             case 'navigator_search_tag':
                 return;
@@ -65,7 +63,7 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
                 return;
             case 'toggle_pick':
                 setIsRoomPicked(value => !value);
-                SendMessageComposer(new RoomStaffPickComposer(navigatorData.enteredGuestRoom.roomId));
+                SendMessageComposer(new ToggleStaffPickMessageComposer(navigatorData.enteredGuestRoom.roomId));
                 return;
             case 'toggle_mute':
                 setIsRoomMuted(value => !value);
@@ -78,7 +76,7 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
                 onCloseClick();
                 return;
         }
-        
+
     }
 
     useEffect(() =>
@@ -86,12 +84,12 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
         if(!navigatorData) return;
 
         setIsRoomPicked(navigatorData.currentRoomIsStaffPick);
-        
+
         if(navigatorData.enteredGuestRoom) setIsRoomMuted(navigatorData.enteredGuestRoom.allInRoomMuted);
     }, [ navigatorData ]);
 
     if(!navigatorData.enteredGuestRoom) return null;
-    
+
     return (
         <NitroCardView className="nitro-room-info" theme="primary-slim">
             <NitroCardHeaderView headerText={ LocalizeText('navigator.roomsettings.roominfo') } onCloseClick={ () => processAction('close') } />
@@ -164,7 +162,7 @@ export const NavigatorRoomInfoView: FC<NavigatorRoomInfoViewProps> = props =>
                             </> }
                         </Column>
                     </> }
-                
+
             </NitroCardContentView>
         </NitroCardView>
     );

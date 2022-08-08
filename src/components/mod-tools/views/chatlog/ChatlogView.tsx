@@ -1,11 +1,9 @@
 import { ChatRecordData } from '@nitrots/nitro-renderer';
 import { CSSProperties, FC, Key, useCallback } from 'react';
 import { AutoSizer, CellMeasurer, CellMeasurerCache, List, ListRowProps } from 'react-virtualized';
-import { TryVisitRoom } from '../../../../api';
+import { CreateLinkEvent, TryVisitRoom } from '../../../../api';
 import { Base, Button, Column, Flex, Grid, Text } from '../../../../common';
-import { ModToolsOpenUserInfoEvent } from '../../../../events';
-import { ModToolsOpenRoomInfoEvent } from '../../../../events/mod-tools/ModToolsOpenRoomInfoEvent';
-import { DispatchUiEvent } from '../../../../hooks';
+import { useModTools } from '../../../../hooks';
 
 interface ChatlogViewProps
 {
@@ -15,6 +13,7 @@ interface ChatlogViewProps
 export const ChatlogView: FC<ChatlogViewProps> = props =>
 {
     const { records = null } = props;
+    const { openRoomInfo = null } = useModTools();
 
     const rowRenderer = (props: ListRowProps) =>
     {
@@ -28,10 +27,10 @@ export const ChatlogView: FC<ChatlogViewProps> = props =>
                 parent={ props.parent }
                 rowIndex={ props.index }
             >
-                <Grid key={ props.key } fullHeight={ false } style={ props.style } gap={ 1 } alignItems="center" className="log-entry py-1 gnui-border-bottom">
-                    <Text className="gnui-txt-white g-col-2">{ chatlogEntry.timestamp }</Text>
-                    <Text className="gnui-txt-white g-col-3" bold underline pointer onClick={ event => DispatchUiEvent(new ModToolsOpenUserInfoEvent(chatlogEntry.userId)) }>{ chatlogEntry.userName }</Text>
-                    <Text textBreak wrap className="gnui-txt-white g-col-7">{ chatlogEntry.message }</Text>
+                <Grid key={ props.key } fullHeight={ false } style={ props.style } gap={ 1 } alignItems="center" className="log-entry py-1 border-bottom">
+                    <Text className="g-col-2">{ chatlogEntry.timestamp }</Text>
+                    <Text className="g-col-3" bold underline pointer onClick={ event => CreateLinkEvent(`mod-tools/open-user-info/${ chatlogEntry.userId }`) }>{ chatlogEntry.userName }</Text>
+                    <Text textBreak wrap className="g-col-7">{ chatlogEntry.message }</Text>
                 </Grid>
             </CellMeasurer>
         );
@@ -78,10 +77,10 @@ export const ChatlogView: FC<ChatlogViewProps> = props =>
                 { (isRoomInfo && currentRecord) &&
                     <RoomInfo roomId={ currentRecord.roomId } roomName={ currentRecord.roomName } uniqueKey={ props.key } style={ props.style } /> }
                 { !isRoomInfo &&
-                    <Grid key={ props.key } fullHeight={ false } style={ props.style } gap={ 1 } alignItems="center" className="log-entry gnui-txt-white py-1 gnui-border-bottom">
-                        <Text className="gnui-txt-white g-col-2">{ chatlogEntry.timestamp }</Text>
-                        <Text className="gnui-txt-white g-col-3" bold underline pointer onClick={ event => DispatchUiEvent(new ModToolsOpenUserInfoEvent(chatlogEntry.userId)) }>{ chatlogEntry.userName }</Text>
-                        <Text textBreak wrap className="gnui-txt-white g-col-7">{ chatlogEntry.message }</Text>
+                    <Grid key={ props.key } fullHeight={ false } style={ props.style } gap={ 1 } alignItems="center" className="log-entry py-1 border-bottom">
+                        <Text className="g-col-2">{ chatlogEntry.timestamp }</Text>
+                        <Text className="g-col-3" bold underline pointer onClick={ event => CreateLinkEvent(`mod-tools/open-user-info/${ chatlogEntry.userId }`) }>{ chatlogEntry.userName }</Text>
+                        <Text textBreak wrap className="g-col-7">{ chatlogEntry.message }</Text>
                     </Grid> }
             </CellMeasurer>
         );
@@ -109,8 +108,8 @@ export const ChatlogView: FC<ChatlogViewProps> = props =>
                     <Text className="gnui-txt-white">{ props.roomName }</Text>
                 </Flex>
                 <Flex gap={ 1 }>
-                    <Button variant="warning" onClick={ event => TryVisitRoom(props.roomId) }>Visit Room</Button>
-                    <Button variant="warning" onClick={ event => DispatchUiEvent(new ModToolsOpenRoomInfoEvent(props.roomId)) }>Room Tools</Button>
+                    <Button onClick={ event => TryVisitRoom(props.roomId) }>Visit Room</Button>
+                    <Button onClick={ event => openRoomInfo(props.roomId) }>Room Tools</Button>
                 </Flex>
             </Flex>
         );
